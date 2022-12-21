@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuisnessLogicLayer", "Buisn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{BABCA576-4F44-463E-AFFE-33A19604DAC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTrackingTest", "TaskTrackingTest\TaskTrackingTest.csproj", "{9CA94ABA-632B-403A-8B8B-E7AC8BD64FCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BABCA576-4F44-463E-AFFE-33A19604DAC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BABCA576-4F44-463E-AFFE-33A19604DAC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BABCA576-4F44-463E-AFFE-33A19604DAC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CA94ABA-632B-403A-8B8B-E7AC8BD64FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CA94ABA-632B-403A-8B8B-E7AC8BD64FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CA94ABA-632B-403A-8B8B-E7AC8BD64FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CA94ABA-632B-403A-8B8B-E7AC8BD64FCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
