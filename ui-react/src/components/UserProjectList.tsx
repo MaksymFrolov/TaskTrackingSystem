@@ -9,8 +9,8 @@ interface UserProjectListProps {
     id?: number
 }
 
-const UserProjectList: FC<UserProjectListProps> = ({id}) => {
-    const { error, isLoading, userProjects } = useTypedSelector(state => state.userprojects)
+const UserProjectList: FC<UserProjectListProps> = ({ id }) => {
+    const { userProjects } = useTypedSelector(state => state.userprojects)
     const { loadUserProjects } = useActions(UserProjectsActionCreators)
     useEffect(() => {
         loadUserProjects(id)
@@ -19,7 +19,7 @@ const UserProjectList: FC<UserProjectListProps> = ({id}) => {
         <>
             {
                 userProjects.map(t =>
-                    <div key={t.id} style={{margin:15}}>
+                    <div key={t.id} style={{ margin: 15 }}>
                         <UserProjectCard userProject={t} />
                     </div>
                 )

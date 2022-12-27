@@ -6,7 +6,7 @@ import { IStatus } from "../../../models/IStatus"
 import { IStatusFormError } from "../../../models/IStatusFormError"
 import { SetErrorAction, SetIsLoadingAction, SetStatusAction, SetStatusErrorAction, StatusActionEnum } from "./types"
 
-export enum StatusEnum{
+export enum StatusEnum {
     BY_TASK = "Task",
     BY_PROJECT = "Project"
 }
@@ -16,12 +16,13 @@ export const StatusActionCreators = {
     setError: (payload: string): SetErrorAction => ({ type: StatusActionEnum.SET_ERROR, payload }),
     setStatusError: (payload: IStatusFormError): SetStatusErrorAction => ({ type: StatusActionEnum.SET_STATUS_ERROR, payload }),
     setIsLoading: (payload: boolean): SetIsLoadingAction => ({ type: StatusActionEnum.SET_IS_LOADING, payload }),
-    loadStatus: (type:StatusEnum, id: number) => async (dispatch: AppDispatch) => {
+    loadStatus: (type: StatusEnum, id: number) => async (dispatch: AppDispatch) => {
         try {
+            dispatch(StatusActionCreators.setStatus({} as IStatus))
             dispatch(StatusActionCreators.setError(""))
             dispatch(StatusActionCreators.setIsLoading(true))
             let response
-            switch(type){
+            switch (type) {
                 case StatusEnum.BY_PROJECT:
                     response = await ProjectStatusService.getStatus(id)
                     break
@@ -34,24 +35,23 @@ export const StatusActionCreators = {
                 dispatch(StatusActionCreators.setStatus(status))
             }
             else {
-                alert("Not found.")
                 dispatch(StatusActionCreators.setError("Not found."))
             }
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(StatusActionCreators.setError((e as Error).message))
         }
-        finally{
+        finally {
             dispatch(StatusActionCreators.setIsLoading(false))
         }
     },
-    addStatus:(type:StatusEnum, status: IStatus) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(StatusActionCreators.setIsLoading(true))
-            dispatch(StatusActionCreators.setError(""))
-            dispatch(StatusActionCreators.setStatusError({}as IStatusFormError))
-            switch(type){
+    addStatus: (type: StatusEnum, status: IStatus) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(StatusActionCreators.setIsLoading(true))
+        dispatch(StatusActionCreators.setError(""))
+        dispatch(StatusActionCreators.setStatusError({} as IStatusFormError))
+        try {
+            switch (type) {
                 case StatusEnum.BY_PROJECT:
                     await ProjectStatusService.addStatus(status)
                     break
@@ -61,20 +61,24 @@ export const StatusActionCreators = {
             }
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(StatusActionCreators.setError((e as Error).message))
             const ae = ((e as AxiosError).response!.data as any).errors
             const name = ae?.Name
-            dispatch(StatusActionCreators.setStatusError({name } as IStatusFormError))
+            dispatch(StatusActionCreators.setStatusError({ name } as IStatusFormError))
+            result = false
         }
-        finally{
+        finally {
             dispatch(StatusActionCreators.setIsLoading(false))
+            return result
         }
     },
-    updateStatus:(type:StatusEnum, status: IStatus) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(StatusActionCreators.setIsLoading(true))
-            switch(type){
+    updateStatus: (type: StatusEnum, status: IStatus) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(StatusActionCreators.setIsLoading(true))
+        dispatch(StatusActionCreators.setError(""))
+        dispatch(StatusActionCreators.setStatusError({} as IStatusFormError))
+        try {
+            switch (type) {
                 case StatusEnum.BY_PROJECT:
                     await ProjectStatusService.updateStatus(status)
                     break
@@ -84,17 +88,23 @@ export const StatusActionCreators = {
             }
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(StatusActionCreators.setError((e as Error).message))
+            const ae = ((e as AxiosError).response!.data as any).errors
+            const name = ae?.Name
+            dispatch(StatusActionCreators.setStatusError({ name } as IStatusFormError))
+            result = false
         }
-        finally{
+        finally {
             dispatch(StatusActionCreators.setIsLoading(false))
+            return result
         }
     },
-    deleteStatus:(type:StatusEnum, id: number) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(StatusActionCreators.setIsLoading(true))
-            switch(type){
+    deleteStatus: (type: StatusEnum, id: number) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(StatusActionCreators.setIsLoading(true))
+        dispatch(StatusActionCreators.setError(""))
+        try {
+            switch (type) {
                 case StatusEnum.BY_PROJECT:
                     await ProjectStatusService.deleteStatus(id)
                     break
@@ -104,11 +114,12 @@ export const StatusActionCreators = {
             }
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(StatusActionCreators.setError((e as Error).message))
+            result = false
         }
-        finally{
+        finally {
             dispatch(StatusActionCreators.setIsLoading(false))
+            return result
         }
     }
 }

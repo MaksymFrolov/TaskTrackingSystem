@@ -1,11 +1,16 @@
-export interface IRole{
-    id:number
-    name:string
-    normalizedName:string
+export interface IRole {
+    id: number
+    name: string
 }
 
-export enum RolesName{
-    USER = "USER",
-    MANAGER = "MANAGER",
-    ADMINISTRATOR = "ADMINISTRATOR"
+export enum RoleNames {
+    USER = "User",
+    MANAGER = "Manager",
+    ADMINISTRATOR = "Administrator"
 }
+
+export const arrayRole : string[] = [
+    RoleNames.ADMINISTRATOR,
+    RoleNames.MANAGER,
+    RoleNames.USER
+]

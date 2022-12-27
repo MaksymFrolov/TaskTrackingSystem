@@ -1,10 +1,12 @@
+import { FC } from "react"
 import { Navigate, Route, Routes } from "react-router-dom"
 import { useTypedSelector } from "../hooks/useTypedSelector"
-import { adminRoutes, anonRoutes, managerRoutes, RouteNames, userManagerCommonRoutes } from "../router"
+import { RoleNames } from "../models/IRole"
+import { adminRoutes, anonRoutes, managerRoutes, RouteNames, userManagerCommonRoutes, userRoutes } from "../router"
 import Header from "./Header"
 
 
-const AppRouter = () => {
+const AppRouter: FC = () => {
     const { isAuth, roles } = useTypedSelector(state => state.auth)
     return (
         isAuth
@@ -14,7 +16,7 @@ const AppRouter = () => {
 
                 <Routes>
                     {
-                        roles.find(t => t.name == "Manager")
+                        roles.find(t => t.name == RoleNames.MANAGER)
                         &&
 
                         managerRoutes.map(route =>
@@ -25,10 +27,10 @@ const AppRouter = () => {
                         )
                     }
                     {
-                        roles.find(t => t.name == "User")
+                        roles.find(t => t.name == RoleNames.USER)
                         &&
 
-                        userManagerCommonRoutes.map(route =>
+                        userRoutes.map(route =>
                             <Route path={route.path}
                                 element={<route.element />}
                                 key={route.path}
@@ -36,7 +38,7 @@ const AppRouter = () => {
                         )
                     }
                     {
-                        roles.find(t => t.name == "Administrator")
+                        roles.find(t => t.name == RoleNames.ADMINISTRATOR)
                         &&
 
                         adminRoutes.map(route =>
@@ -47,8 +49,10 @@ const AppRouter = () => {
                         )
                     }
                     <Route
+                        key={1}
                         path="*"
-                        element={<Navigate to={RouteNames.HOME} replace />}
+                        element={<Navigate to={RouteNames.HOME}
+                            replace />}
                     />
                 </Routes>
             </>
@@ -61,8 +65,10 @@ const AppRouter = () => {
                     />
                 )}
                 <Route
+                    key={2}
                     path="*"
-                    element={<Navigate to={RouteNames.LOGIN} replace />}
+                    element={<Navigate to={RouteNames.LOGIN}
+                        replace />}
                 />
             </Routes>
     )

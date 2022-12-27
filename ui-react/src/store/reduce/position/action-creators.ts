@@ -13,6 +13,7 @@ export const PositionActionCreators = {
     setIsLoading: (payload: boolean): SetIsLoadingAction => ({ type: PositionActionEnum.SET_IS_LOADING, payload }),
     loadPosition: (id: number) => async (dispatch: AppDispatch) => {
         try {
+            dispatch(PositionActionCreators.setPosition({} as IPosition))
             dispatch(PositionActionCreators.setError(""))
             dispatch(PositionActionCreators.setIsLoading(true))
             const response = await PositionService.getPosition(id)
@@ -25,56 +26,68 @@ export const PositionActionCreators = {
             }
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(PositionActionCreators.setError((e as Error).message))
         }
-        finally{
+        finally {
             dispatch(PositionActionCreators.setIsLoading(false))
         }
     },
-    addPosition:(position: IPosition) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(PositionActionCreators.setPositionError({}as IPositionFormError))
-            dispatch(PositionActionCreators.setError(""))
-            dispatch(PositionActionCreators.setIsLoading(true))
+    addPosition: (position: IPosition) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(PositionActionCreators.setPositionError({} as IPositionFormError))
+        dispatch(PositionActionCreators.setError(""))
+        dispatch(PositionActionCreators.setIsLoading(true))
+        try {
             await PositionService.addPosition(position)
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(PositionActionCreators.setError((e as Error).message))
             const ae = ((e as AxiosError).response!.data as any).errors
             const name = ae?.Name
             const description = ae?.Description
-            dispatch(PositionActionCreators.setPositionError({name, description } as IPositionFormError))
+            dispatch(PositionActionCreators.setPositionError({ name, description } as IPositionFormError))
+            result = false
         }
-        finally{
+        finally {
             dispatch(PositionActionCreators.setIsLoading(false))
+            return result
         }
     },
-    updatePosition:(position: IPosition) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(PositionActionCreators.setIsLoading(true))
+    updatePosition: (position: IPosition) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(PositionActionCreators.setPositionError({} as IPositionFormError))
+        dispatch(PositionActionCreators.setError(""))
+        dispatch(PositionActionCreators.setIsLoading(true))
+        try {
             await PositionService.updatePosition(position)
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(PositionActionCreators.setError((e as Error).message))
+            const ae = ((e as AxiosError).response!.data as any).errors
+            const name = ae?.Name
+            const description = ae?.Description
+            dispatch(PositionActionCreators.setPositionError({ name, description } as IPositionFormError))
+            result = false
         }
-        finally{
+        finally {
             dispatch(PositionActionCreators.setIsLoading(false))
+            return result
         }
     },
-    deletePosition:(id: number) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(PositionActionCreators.setIsLoading(true))
+    deletePosition: (id: number) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(PositionActionCreators.setError(""))
+        dispatch(PositionActionCreators.setIsLoading(true))
+        try {
             await PositionService.deletePosition(id)
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(PositionActionCreators.setError((e as Error).message))
+            result = false
         }
-        finally{
+        finally {
             dispatch(PositionActionCreators.setIsLoading(false))
+            return result
         }
     }
 }

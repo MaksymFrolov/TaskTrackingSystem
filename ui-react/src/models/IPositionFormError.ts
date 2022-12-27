@@ -1,4 +1,4 @@
-export interface IPositionFormError{
-    name:string[]
-    description:string[]
+export interface IPositionFormError {
+    name: string[]
+    description: string[]
 }

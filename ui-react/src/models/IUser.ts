@@ -1,9 +1,9 @@
-export interface IUser{
-    id:number
-    firstName:string
-    lastName:string
-    userName:string
-    email:string
-    userProjectIds:number[]
-    taskIds:number[]
+export interface IUser {
+    id: number
+    firstName: string
+    lastName: string
+    userName: string
+    email: string
+    userProjectIds: number[]
+    taskIds: number[]
 }

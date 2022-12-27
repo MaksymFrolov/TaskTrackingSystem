@@ -5,7 +5,7 @@ import { ProjectAction, ProjectActionEnum, ProjectState } from "./types"
 
 const initialState: ProjectState = {
     error: '',
-    isLoading: true,
+    isLoading: false,
     project: {} as IProject,
     projectError: {} as IProjectFormError
 }

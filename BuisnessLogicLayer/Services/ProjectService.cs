@@ -14,13 +14,16 @@ namespace BuisnessLogicLayer.Services
 
         readonly IMapper mapper;
 
+        readonly IEmailService emailService;
+
         /// <summary>Initializes a new instance of the <see cref="ProjectService" /> class.</summary>
         /// <param name="unitOfWork">The unit of work.</param>
         /// <param name="mapper">The mapper.</param>
-        public ProjectService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ProjectService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.emailService = emailService;
         }
 
         /// <summary>Adds the project model asynchronous.</summary>
@@ -53,9 +56,24 @@ namespace BuisnessLogicLayer.Services
         /// <param name="id">The identifier.</param>
         public async Task DeleteAsync(int id)
         {
+            var users = await GetAllUsersByProjectIdAsync(id);
+
+            var project = await GetByIdAsync(id);
+
             await unitOfWork.ProjectRepository.DeleteByIdAsync(id);
 
             await unitOfWork.SaveAsync();
+
+            if (users.Count() > 0)
+            {
+                var message = new MessageModel(users.Select(t => t.Email),
+                $"Project {project.Name} has been deleted.",
+                $"Hello! We have noticed that the project {project.Name} has been deleted!\n\n" +
+                $" We hope it was comfortable to work with us!\n" +
+                $"Thanks, The Task tracking system team.");
+
+                await emailService.SendEmailAsync(message);
+            }
         }
 
         /// <summary>Deletes the status asynchronous.</summary>
@@ -116,6 +134,20 @@ namespace BuisnessLogicLayer.Services
             unitOfWork.ProjectRepository.Update(project);
 
             await unitOfWork.SaveAsync();
+
+            var users = await GetAllUsersByProjectIdAsync(model.Id);
+
+            if (users.Count() > 0)
+            {
+                var message = new MessageModel(users.Select(t => t.Email),
+                    $"Project {model.Name} has been modified!.",
+                    $"Hello! We are happy to announce that the project {model.Name} has been modified!\n\n" +
+                    $"Please, check what's new! This will help you to become better!\n" +
+                    $"Small win today--big achievement tomorrow!\n" +
+                    $"Thanks,The Task tracking system team.");
+
+                await emailService.SendEmailAsync(message);
+            }
         }
 
         /// <summary>Updates the status asynchronous.</summary>

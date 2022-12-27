@@ -4,7 +4,7 @@ import { StatusesAction, StatusesActionEnum, StatusesState } from "./types"
 
 const initialState: StatusesState = {
     error: '',
-    isLoading: true,
+    isLoading: false,
     statuses: [] as IStatus[]
 }
 

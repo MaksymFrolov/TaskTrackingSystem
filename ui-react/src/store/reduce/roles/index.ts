@@ -4,7 +4,7 @@ import { RolesAction, RolesActionEnum, RolesState } from "./types"
 
 const initialState: RolesState = {
     error: '',
-    isLoading: true,
+    isLoading: false,
     roles: [] as IRole[]
 }
 

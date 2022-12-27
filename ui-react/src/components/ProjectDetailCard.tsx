@@ -1,9 +1,10 @@
 import { FC, useEffect } from "react"
-import { Button } from "react-bootstrap"
+import { Button, Dropdown } from "react-bootstrap"
 import Card from "react-bootstrap/esm/Card"
 import { useNavigate, useParams } from "react-router-dom"
 import { useActions } from "../hooks/useActions"
 import { useTypedSelector } from "../hooks/useTypedSelector"
+import { RoleNames } from "../models/IRole"
 import { ProjectActionCreators } from "../store/reduce/project/action-creators"
 import { convertDate } from "../utils/convertDate"
 
@@ -13,13 +14,16 @@ const ProjectDetailCard: FC = () => {
     const navigate = useNavigate()
     const { project } = useTypedSelector(t => t.project)
     const { loadProject, deleteProject } = useActions(ProjectActionCreators)
-    const { isAuth, roles } = useTypedSelector(state => state.auth)
+    const { roles } = useTypedSelector(state => state.auth)
     const param = useParams()
     useEffect(() => {
         loadProject(Number(param.id))
     }, [])
-    const submit = () => {
-        deleteProject( project.id)
+    const submit = async () => {
+        const result = await deleteProject(project.id)
+        if (result) {
+            navigate('/projects')
+        }
     }
     return (
         <Card
@@ -32,7 +36,7 @@ const ProjectDetailCard: FC = () => {
                         project.description
                     }
                 </p>
-                <p style={{marginTop:15}}>
+                <p style={{ marginTop: 15 }}>
                     Tasks: {project.taskIds?.length}
                 </p>
 
@@ -51,26 +55,28 @@ const ProjectDetailCard: FC = () => {
                         project.statusName
                     }
                 </p>
-                <p style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Button onClick={() => navigate(`/project/tasks/${project.id}`)}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Button onClick={() => navigate(`/project/${project.id}/tasks`)}>
                         Get All Tasks
                     </Button>
+                    <Button onClick={() => navigate(`/project/${project.id}/users`)}>
+                        Get All Users
+                    </Button>
                     {
-                        roles.find(t => t.name == "Manager")
+                        roles.find(t => t.name == RoleNames.MANAGER)
                         &&
-                        <>
-                            <Button onClick={() => navigate(`/add/task/${project.id}`)}>
-                                Add Task
-                            </Button>
-                            <Button onClick={() => navigate(`/project/${project.id}/update/status`)}>
-                                Update Status
-                            </Button>
-                            <Button onClick={() => submit()}>
-                                Delete Project
-                            </Button>
-                        </>
+                        <Dropdown>
+                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                Manager's Buttons
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => navigate(`/add/task/${project.id}`)}>Add Task</Dropdown.Item>
+                                <Dropdown.Item onClick={() => navigate(`/update/projects/${project.id}`)}>Update Project</Dropdown.Item>
+                                <Dropdown.Item onClick={() => submit()}>Delete Project</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
                     }
-                </p>
+                </div>
             </Card.Body>
         </Card>
     )

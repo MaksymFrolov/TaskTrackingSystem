@@ -21,7 +21,8 @@ namespace WebAPI
         {
             services.AddIdentity<User, IdentityRole<int>>()
                 .AddRoles<IdentityRole<int>>()
-                .AddEntityFrameworkStores<TaskDbContext>();
+                .AddEntityFrameworkStores<TaskDbContext>()
+                .AddDefaultTokenProviders();
         }
 
         public static void ConfigureLogger(this ILoggingBuilder logging, IConfiguration configuration)

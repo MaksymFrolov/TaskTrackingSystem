@@ -1,3 +1,3 @@
-export interface IStatusFormError{
-    name:string[]
+export interface IStatusFormError {
+    name: string[]
 }

@@ -5,7 +5,7 @@ import { IStatus } from "../../../models/IStatus"
 import { SetErrorAction, SetIsLoadingAction, SetStatusesAction, StatusesActionEnum } from "./types"
 
 
-export enum GetStatusesEnum{
+export enum GetStatusesEnum {
     BY_TASK = "Task",
     BY_PROJECT = "Project"
 }
@@ -16,10 +16,11 @@ export const StatusesActionCreators = {
     setIsLoading: (payload: boolean): SetIsLoadingAction => ({ type: StatusesActionEnum.SET_IS_LOADING, payload }),
     loadStatuses: (type: GetStatusesEnum) => async (dispatch: AppDispatch) => {
         try {
+            dispatch(StatusesActionCreators.setStatuses([] as IStatus[]))
             dispatch(StatusesActionCreators.setError(""))
             dispatch(StatusesActionCreators.setIsLoading(true))
             let response
-            switch(type){
+            switch (type) {
                 case GetStatusesEnum.BY_PROJECT:
                     response = await ProjectStatusService.getStatuses()
                     break
@@ -28,19 +29,17 @@ export const StatusesActionCreators = {
                     break
             }
             const statuses = response?.data
-            if (statuses?.length != 0) {
+            if (statuses?.length !== 0) {
                 dispatch(StatusesActionCreators.setStatuses(statuses!))
             }
             else {
-                alert("Not found.")
                 dispatch(StatusesActionCreators.setError("Not found."))
             }
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(StatusesActionCreators.setError((e as Error).message))
         }
-        finally{
+        finally {
             dispatch(StatusesActionCreators.setIsLoading(false))
         }
     }

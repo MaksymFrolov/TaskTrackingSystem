@@ -10,6 +10,7 @@ export const UserProjectActionCreators = {
     setIsLoading: (payload: boolean): SetIsLoadingAction => ({ type: UserProjectActionEnum.SET_IS_LOADING, payload }),
     loadUserProject: (id: number) => async (dispatch: AppDispatch) => {
         try {
+            dispatch(UserProjectActionCreators.setUserProject({} as IUserProject))
             dispatch(UserProjectActionCreators.setError(""))
             dispatch(UserProjectActionCreators.setIsLoading(true))
             const response = await UserProjectService.getUserProject(id)
@@ -18,81 +19,94 @@ export const UserProjectActionCreators = {
                 dispatch(UserProjectActionCreators.setUserProject(userProject))
             }
             else {
-                alert("Not found.")
                 dispatch(UserProjectActionCreators.setError("Not found."))
             }
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(UserProjectActionCreators.setError((e as Error).message))
         }
-        finally{
+        finally {
             dispatch(UserProjectActionCreators.setIsLoading(false))
         }
     },
-    addUserProject:(userProject: IUserProject) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(UserProjectActionCreators.setIsLoading(true))
+    addUserProject: (userProject: IUserProject) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(UserProjectActionCreators.setIsLoading(true))
+        dispatch(UserProjectActionCreators.setError(""))
+        try {
             await UserProjectService.addUserProject(userProject)
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(UserProjectActionCreators.setError((e as Error).message))
+            result = false
         }
-        finally{
+        finally {
             dispatch(UserProjectActionCreators.setIsLoading(false))
+            return result
         }
     },
-    addUserProjects:(userProjects: IUserProject[]) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(UserProjectActionCreators.setIsLoading(true))
+    addUserProjects: (userProjects: IUserProject[]) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(UserProjectActionCreators.setIsLoading(true))
+        dispatch(UserProjectActionCreators.setError(""))
+        try {
             await UserProjectService.addUserProjects(userProjects)
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(UserProjectActionCreators.setError((e as Error).message))
+            result = false
         }
-        finally{
+        finally {
             dispatch(UserProjectActionCreators.setIsLoading(false))
+            return result
         }
     },
-    updateUserProject:(userProject: IUserProject) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(UserProjectActionCreators.setIsLoading(true))
+    updateUserProject: (userProject: IUserProject) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(UserProjectActionCreators.setIsLoading(true))
+        dispatch(UserProjectActionCreators.setError(""))
+        try {
             await UserProjectService.updateUserProject(userProject)
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(UserProjectActionCreators.setError((e as Error).message))
+            result = false
         }
-        finally{
+        finally {
             dispatch(UserProjectActionCreators.setIsLoading(false))
+            return result
         }
     },
-    deleteUserProject:(id: number) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(UserProjectActionCreators.setIsLoading(true))
+    deleteUserProject: (id: number) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(UserProjectActionCreators.setIsLoading(true))
+        dispatch(UserProjectActionCreators.setError(""))
+        try {
             await UserProjectService.deleteUserProject(id)
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(UserProjectActionCreators.setError((e as Error).message))
+            result = false
         }
-        finally{
+        finally {
             dispatch(UserProjectActionCreators.setIsLoading(false))
+            return result
         }
     },
-    deleteUserProjects:(ids: number[]) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(UserProjectActionCreators.setIsLoading(true))
+    deleteUserProjects: (ids: number[]) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(UserProjectActionCreators.setIsLoading(true))
+        dispatch(UserProjectActionCreators.setError(""))
+        try {
             await UserProjectService.deleteUserProjects(ids)
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(UserProjectActionCreators.setError((e as Error).message))
+            result = false
         }
-        finally{
+        finally {
             dispatch(UserProjectActionCreators.setIsLoading(false))
+            return result
         }
     }
 }

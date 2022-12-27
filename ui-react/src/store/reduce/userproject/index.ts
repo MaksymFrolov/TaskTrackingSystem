@@ -4,7 +4,7 @@ import { UserProjectAction, UserProjectActionEnum, UserProjectState } from "./ty
 
 const initialState: UserProjectState = {
     error: '',
-    isLoading: true,
+    isLoading: false,
     userProject: {} as IUserProject
 }
 

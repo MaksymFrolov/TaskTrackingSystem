@@ -21,7 +21,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = UserModels.FirstOrDefault(t => t.Id == id);
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
 
             // Act
             var actual = await userService.GetByIdAsync(id);
@@ -46,7 +46,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = RoleModels.FirstOrDefault(t => t.Id == id);
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
 
             // Act
             var actual = await userService.GetRoleByIdAsync(id);
@@ -66,7 +66,10 @@ namespace TaskTrackingTest.BusinessTests
 
             fakeUserManager.Setup(m => m.CreateAsync(It.IsAny<User>(), It.IsAny<string>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var mockEmailService = new Mock<IEmailService>();
+            mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
+
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -95,7 +98,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = string.Empty,
@@ -123,7 +126,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -151,7 +154,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -179,7 +182,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -207,7 +210,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -235,7 +238,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -263,19 +266,18 @@ namespace TaskTrackingTest.BusinessTests
 
             mockRoleManager.Setup(m => m.CreateAsync(It.IsAny<IdentityRole<int>>()));
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
             var role = new RoleModel
             {
                 Id = 1,
-                Name="Name1",
-                NormalizedName="NAME1"
+                Name="Name1"
             };
 
             //Act
             await userService.AddRoleAsync(role);
 
             //Assert
-            mockRoleManager.Verify(x => x.CreateAsync(It.Is<IdentityRole<int>>(c => c.Name == role.Name && c.Id == role.Id && c.NormalizedName == role.NormalizedName)), Times.Once);
+            mockRoleManager.Verify(x => x.CreateAsync(It.Is<IdentityRole<int>>(c => c.Name == role.Name && c.Id == role.Id)), Times.Once);
         }
 
         [Test]
@@ -288,37 +290,11 @@ namespace TaskTrackingTest.BusinessTests
 
             mockRoleManager.Setup(m => m.CreateAsync(It.IsAny<IdentityRole<int>>()));
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
             var role = new RoleModel
             {
                 Id = 1,
-                Name = string.Empty,
-                NormalizedName = "NAME1"
-            };
-
-            //Act
-            Func<Task> act = async () => await userService.AddRoleAsync(role);
-
-            //Assert
-            await act.Should().ThrowAsync<TaskTrackingException>();
-        }
-
-        [Test]
-        public async Task UserService_AddRoleAsync_ThrowsTaskTrackingExceptionWithEmptyNormalizedName()
-        {
-            //Arrange
-            var mockStore = new Mock<IRoleStore<IdentityRole<int>>>();
-
-            var mockRoleManager = new Mock<RoleManager<IdentityRole<int>>>(mockStore.Object, null, null, null, null);
-
-            mockRoleManager.Setup(m => m.CreateAsync(It.IsAny<IdentityRole<int>>()));
-
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile());
-            var role = new RoleModel
-            {
-                Id = 1,
-                Name = "Name1",
-                NormalizedName = string.Empty
+                Name = string.Empty
             };
 
             //Act
@@ -338,26 +314,24 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(m => m.FindByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.First());
             fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
-            fakeUserManager.Setup(m => m.ChangePasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var mockEmailService = new Mock<IEmailService>();
+            mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
+
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var user = new UpdateUserModel
             {
                 Id=1,
                 FirstName = "Firstname2",
                 LastName = "Lastname1",
                 UserName = "Username1",
-                Email = "email1@gmail.com",
-                Password = "*1aApassword",
-                ConfirmPassword = "*1aApassword",
-                OldPassword = "*1aAoldpassword"
+                Email = "email1@gmail.com"
             };
 
             //Act
             await userService.UpdateAsync(user);
 
             //Assert
-            fakeUserManager.Verify(x => x.ChangePasswordAsync(It.Is<User>(c => c.FirstName == user.FirstName && c.LastName == user.LastName && c.UserName == user.UserName && c.Email == user.Email), It.Is<string>(t => t == user.OldPassword), It.Is<string>(t => t == user.Password)), Times.Once);
             fakeUserManager.Verify(x => x.UpdateAsync(It.Is<User>(c => c.FirstName == user.FirstName && c.LastName == user.LastName && c.UserName == user.UserName && c.Email == user.Email)), Times.Once);
         }
 
@@ -373,19 +347,18 @@ namespace TaskTrackingTest.BusinessTests
                 .ReturnsAsync(RoleEntities.First());
             mockRoleManager.Setup(m => m.UpdateAsync(It.IsAny<IdentityRole<int>>()));
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
             var role = new RoleModel
             {
                 Id = 1,
-                Name = "Name2",
-                NormalizedName = "NAME1"
+                Name = "Name2"
             };
 
             //Act
             await userService.UpdateRoleAsync(role);
 
             //Assert
-            mockRoleManager.Verify(x => x.UpdateAsync(It.Is<IdentityRole<int>>(c => c.Name == role.Name && c.Id == role.Id && c.NormalizedName == role.NormalizedName)), Times.Once);
+            mockRoleManager.Verify(x => x.UpdateAsync(It.Is<IdentityRole<int>>(c => c.Name == role.Name && c.Id == role.Id)), Times.Once);
         }
 
         [Test]
@@ -398,17 +371,14 @@ namespace TaskTrackingTest.BusinessTests
                 .ReturnsAsync(UserEntities.First());
             fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new UpdateUserModel
             {
                 Id=1,
                 FirstName = string.Empty,
                 LastName = "Lastname1",
                 UserName = "Username1",
-                Email = "email1@gmail.com",
-                Password = "*1aApassword",
-                ConfirmPassword = "*1aApassword",
-                OldPassword = "*1aAoldpassword"
+                Email = "email1@gmail.com"
             };
 
             //Act
@@ -428,17 +398,14 @@ namespace TaskTrackingTest.BusinessTests
                 .ReturnsAsync(UserEntities.First());
             fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new UpdateUserModel
             {
                 Id=1,
                 FirstName = "Firstname1",
                 LastName = string.Empty,
                 UserName = "Username1",
-                Email = "email1@gmail.com",
-                Password = "*1aApassword",
-                ConfirmPassword = "*1aApassword",
-                OldPassword = "*1aAoldpassword"
+                Email = "email1@gmail.com"
             };
 
             //Act
@@ -458,17 +425,14 @@ namespace TaskTrackingTest.BusinessTests
                 .ReturnsAsync(UserEntities.First());
             fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new UpdateUserModel
             {
                 Id=1,
                 FirstName = "Firstname1",
                 LastName = "Lastname1",
                 UserName = string.Empty,
-                Email = "email1@gmail.com",
-                Password = "*1aApassword",
-                ConfirmPassword = "*1aApassword",
-                OldPassword = "*1aAoldpassword"
+                Email = "email1@gmail.com"
             };
 
             //Act
@@ -488,107 +452,14 @@ namespace TaskTrackingTest.BusinessTests
                 .ReturnsAsync(UserEntities.First());
             fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new UpdateUserModel
             {
                 Id=1,
                 FirstName = "Firstname1",
                 LastName = "Lastname1",
                 UserName = "Username1",
-                Email = string.Empty,
-                Password = "*1aApassword",
-                ConfirmPassword = "*1aApassword",
-                OldPassword = "*1aAoldpassword"
-            };
-
-            //Act
-            Func<Task> act = async () => await userService.UpdateAsync(user);
-
-            //Assert
-            await act.Should().ThrowAsync<TaskTrackingException>();
-        }
-
-        [Test]
-        public async Task UserService_UpdateUserAsync_ThrowsTaskTrackingExceptionWithEmptyPassword()
-        {
-            //Arrange
-            var fakeUserManager = new Mock<FakeUserManager>();
-
-            fakeUserManager.Setup(m => m.FindByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(UserEntities.First());
-            fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
-
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
-            var user = new UpdateUserModel
-            {
-                Id=1,
-                FirstName = "Firstname1",
-                LastName = "Lastname1",
-                UserName = "Username1",
-                Email = "email1@gmail.com",
-                Password = string.Empty,
-                ConfirmPassword = "*1aApassword",
-                OldPassword = "*1aAoldpassword"
-            };
-
-            //Act
-            Func<Task> act = async () => await userService.UpdateAsync(user);
-
-            //Assert
-            await act.Should().ThrowAsync<TaskTrackingException>();
-        }
-
-        [Test]
-        public async Task UserService_UpdateUserAsync_ThrowsTaskTrackingExceptionWithEmptyConfirmPassword()
-        {
-            //Arrange
-            var fakeUserManager = new Mock<FakeUserManager>();
-
-            fakeUserManager.Setup(m => m.FindByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(UserEntities.First());
-            fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
-
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
-            var user = new UpdateUserModel
-            {
-                Id=1,
-                FirstName = "Firstname1",
-                LastName = "Lastname1",
-                UserName = "Username1",
-                Email = "email1@gmail.com",
-                Password = "*1aApassword",
-                ConfirmPassword = string.Empty,
-                OldPassword = "*1aAoldpassword"
-            };
-
-            //Act
-            Func<Task> act = async () => await userService.UpdateAsync(user);
-
-            //Assert
-            await act.Should().ThrowAsync<TaskTrackingException>();
-        }
-
-        [Test]
-        public async Task UserService_UpdateUserAsync_ThrowsTaskTrackingExceptionWithEmptyOldPassword()
-        {
-            //Arrange
-            var fakeUserManager = new Mock<FakeUserManager>();
-
-            fakeUserManager.Setup(m => m.FindByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(UserEntities.First());
-            fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
-
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
-            var user = new UpdateUserModel
-            {
-                Id=1,
-                FirstName = "Firstname1",
-                LastName = "Lastname1",
-                UserName = "Username1",
-                Email = "email1@gmail.com",
-                Password = "*1aApassword",
-                ConfirmPassword = "*1aApassword",
-                OldPassword = string.Empty
+                Email = string.Empty
             };
 
             //Act
@@ -610,39 +481,11 @@ namespace TaskTrackingTest.BusinessTests
             mockRoleManager.Setup(t => t.FindByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(RoleEntities.First());
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
             var role = new RoleModel
             {
                 Id = 1,
-                Name = string.Empty,
-                NormalizedName = "NAME1"
-            };
-
-            //Act
-            Func<Task> act = async () => await userService.UpdateRoleAsync(role);
-
-            //Assert
-            await act.Should().ThrowAsync<TaskTrackingException>();
-        }
-
-        [Test]
-        public async Task UserService_UpdateRoleAsync_ThrowsTaskTrackingExceptionWithEmptyNormalizedName()
-        {
-            //Arrange
-            var mockStore = new Mock<IRoleStore<IdentityRole<int>>>();
-
-            var mockRoleManager = new Mock<RoleManager<IdentityRole<int>>>(mockStore.Object, null, null, null, null);
-
-            mockRoleManager.Setup(m => m.UpdateAsync(It.IsAny<IdentityRole<int>>()));
-            mockRoleManager.Setup(t => t.FindByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(RoleEntities.First());
-
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile());
-            var role = new RoleModel
-            {
-                Id = 1,
-                Name = "Name1",
-                NormalizedName = string.Empty
+                Name = string.Empty
             };
 
             //Act
@@ -664,7 +507,10 @@ namespace TaskTrackingTest.BusinessTests
 
             fakeUserManager.Setup(m => m.DeleteAsync(It.IsAny<User>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var mockEmailService = new Mock<IEmailService>();
+            mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
+
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
 
             //Act
             await userService.DeleteAsync(1);
@@ -688,7 +534,7 @@ namespace TaskTrackingTest.BusinessTests
 
             mockRoleManager.Setup(m => m.DeleteAsync(It.IsAny<IdentityRole<int>>()));
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             await userService.DeleteRoleAsync(1);
@@ -708,13 +554,14 @@ namespace TaskTrackingTest.BusinessTests
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Id == 1));
 
             fakeUserManager.Setup(t => t.AddToRoleAsync(It.IsAny<User>(), It.IsAny<string>()));
+            var mockEmailService = new Mock<IEmailService>();
+            mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var role = new RoleModel
             {
                 Id = 1,
-                Name = "Name1",
-                NormalizedName = "NAME1"
+                Name = "Name1"
             };
 
             //Act
@@ -736,7 +583,10 @@ namespace TaskTrackingTest.BusinessTests
 
             fakeUserManager.Setup(t => t.AddToRolesAsync(It.IsAny<User>(), It.IsAny<IEnumerable<string>>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var mockEmailService = new Mock<IEmailService>();
+            mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
+
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var roles = RoleModels.ToList();
 
             //Act
@@ -758,7 +608,10 @@ namespace TaskTrackingTest.BusinessTests
 
             fakeUserManager.Setup(t => t.RemoveFromRolesAsync(It.IsAny<User>(), It.IsAny<IEnumerable<string>>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var mockEmailService = new Mock<IEmailService>();
+            mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
+
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var roles = RoleModels.ToList();
 
             //Act
@@ -780,12 +633,14 @@ namespace TaskTrackingTest.BusinessTests
 
             fakeUserManager.Setup(t => t.RemoveFromRoleAsync(It.IsAny<User>(), It.IsAny<string>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var mockEmailService = new Mock<IEmailService>();
+            mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
+
+            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var role = new RoleModel
             {
                 Id = 1,
-                Name = "Name1",
-                NormalizedName = "NAME1"
+                Name = "Name1"
             };
 
             //Act
@@ -808,7 +663,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = PositionModels.ToList();
 
-            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             var actual = await userService.GetAllPositionsByUserIdAsync(1);
@@ -829,7 +684,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = ProjectModels.ToList();
 
-            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             var actual = await userService.GetAllProjectsByUserIdAsync(1);
@@ -851,7 +706,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = TaskModels.ToList();
 
-            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             var actual = await userService.GetAllTasksByUserIdAsync(1);
@@ -873,7 +728,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = TaskModels.ToList();
 
-            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             var actual = await userService.GetAllTasksByManagerIdAsync(2);
@@ -904,7 +759,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = RoleModels.Where(t => t.Name == "Name1");
 
-            var userService = new UserService(mockRoleManager.Object, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile());
+            var userService = new UserService(mockRoleManager.Object, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             var actual = await userService.GetAllRolesByUserIdAsync(1);
@@ -932,9 +787,9 @@ namespace TaskTrackingTest.BusinessTests
         private static IEnumerable<RoleModel> RoleModels =>
             new List<RoleModel>
             {
-                new RoleModel{Id=1,Name="Name1",NormalizedName="NAME1"},
-                new RoleModel{Id=2,Name="Name2",NormalizedName="NAME2"},
-                new RoleModel{Id=3,Name="Name3",NormalizedName="NAME3"}
+                new RoleModel{Id=1,Name="Name1"},
+                new RoleModel{Id=2,Name="Name2"},
+                new RoleModel{Id=3,Name="Name3"}
             };
 
         private static IEnumerable<IdentityRole<int>> RoleEntities =>

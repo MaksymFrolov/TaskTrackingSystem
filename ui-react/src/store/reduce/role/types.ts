@@ -1,14 +1,17 @@
 import { IRole } from "../../../models/IRole"
+import { IRoleFormError } from "../../../models/IRoleFormError"
 
 
 export interface RoleState {
     role: IRole
     isLoading: boolean
     error: string
+    roleError: IRoleFormError
 }
 
 export enum RoleActionEnum {
     SET_ERROR = 'SET_ROLE_ERROR',
+    SET_ROLE_ERROR = 'SET_ROLE_FORM_ERROR',
     SET_ROLE = 'SET_ROLE',
     SET_IS_LOADING = "SET_ROLE_IS_LOADING"
 }
@@ -16,6 +19,10 @@ export enum RoleActionEnum {
 export interface SetErrorAction {
     type: RoleActionEnum.SET_ERROR
     payload: string
+}
+export interface SetRoleErrorAction {
+    type: RoleActionEnum.SET_ROLE_ERROR
+    payload: IRoleFormError
 }
 export interface SetRoleAction {
     type: RoleActionEnum.SET_ROLE
@@ -28,4 +35,5 @@ export interface SetIsLoadingAction {
 export type RoleAction =
     SetErrorAction |
     SetRoleAction |
-    SetIsLoadingAction 
+    SetIsLoadingAction |
+    SetRoleErrorAction

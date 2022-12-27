@@ -8,31 +8,30 @@ export const RolesActionCreators = {
     setRoles: (roles: IRole[]): SetRolesAction => ({ type: RolesActionEnum.SET_ROLES, payload: roles }),
     setError: (payload: string): SetErrorAction => ({ type: RolesActionEnum.SET_ERROR, payload }),
     setIsLoading: (payload: boolean): SetIsLoadingAction => ({ type: RolesActionEnum.SET_IS_LOADING, payload }),
-    loadRoles: (id?:number) => async (dispatch: AppDispatch) => {
+    loadRoles: (id?: number) => async (dispatch: AppDispatch) => {
         try {
+            dispatch(RolesActionCreators.setRoles([] as IRole[]))
             dispatch(RolesActionCreators.setError(""))
             dispatch(RolesActionCreators.setIsLoading(true))
             let response
-            if(id){
+            if (id) {
                 response = await RoleService.getRolesByUserId(id)
-            } 
-            else{
+            }
+            else {
                 response = await RoleService.getRoles()
             }
             const roles = response.data
-            if (roles.length != 0) {
+            if (roles.length !== 0) {
                 dispatch(RolesActionCreators.setRoles(roles))
             }
             else {
-                alert("Not found.")
                 dispatch(RolesActionCreators.setError("Not found."))
             }
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(RolesActionCreators.setError((e as Error).message))
         }
-        finally{
+        finally {
             dispatch(RolesActionCreators.setIsLoading(false))
         }
     }

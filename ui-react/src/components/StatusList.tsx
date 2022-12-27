@@ -1,31 +1,21 @@
-import { FC, useEffect } from "react"
-import { useActions } from "../hooks/useActions"
+import { FC } from "react"
 import { useTypedSelector } from "../hooks/useTypedSelector"
-import { GetStatusesEnum, StatusesActionCreators } from "../store/reduce/statuses/action-creators"
+import { StatusEnum } from "../store/reduce/status/action-creators"
 import StatusCard from "./StatusCard"
 
 
 interface StatusListProps {
-    name: string
+    type: StatusEnum
 }
 
-const StatusList: FC<StatusListProps> = ({name}) => {
-    const { error, isLoading, statuses } = useTypedSelector(state => state.statuses)
-    const { loadStatuses } = useActions(StatusesActionCreators)
-    useEffect(() => {
-        if(name=="task"){
-            loadStatuses(GetStatusesEnum.BY_TASK)
-        }
-        else{
-            loadStatuses(GetStatusesEnum.BY_PROJECT)
-        }
-    }, [])
+const StatusList: FC<StatusListProps> = ({ type }) => {
+    const { statuses } = useTypedSelector(state => state.statuses)
     return (
         <>
             {
                 statuses.map(t =>
-                    <div key={t.id} style={{margin:15}}>
-                        <StatusCard status={t} name={name} />
+                    <div key={t.id} style={{ margin: 15 }}>
+                        <StatusCard status={t} type={type} />
                     </div>
                 )
             }

@@ -30,5 +30,31 @@ namespace WebAPI.Controllers
 
             return Ok(model);
         }
+
+        /// <summary>Forgot Password.</summary>
+        /// <param name="model">The forgot password model.</param>
+        /// <returns>
+        ///   ObjectResult
+        /// </returns>
+        [HttpPost("forgot")]
+        public async Task<ActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
+        {
+            await authService.ForgotPassword(model);
+
+            return Ok();
+        }
+
+        /// <summary>Reset Password.</summary>
+        /// <param name="model">The reset password model.</param>
+        /// <returns>
+        ///   ObjectResult
+        /// </returns>
+        [HttpPost("reset")]
+        public async Task<ActionResult> ResetPassword([FromBody] ResetPasswordModel model)
+        {
+            await authService.ResetPassword(model);
+
+            return Ok();
+        }
     }
 }

@@ -386,47 +386,47 @@ namespace TaskTrackingTest.IntegrationTests
                 t.Excluding(t=>t.UserProjectIds).Excluding(t=>t.TaskIds));
         }
 
-        [Test]
-        public async Task TasksController_Update_UpdatesTaskStatusInDb()
-        {
-            //arrange
-            var status = new StatusModel { Id = 2, Name = "Status2" };
+        //[Test]
+        //public async Task TasksController_Update_UpdatesTaskStatusInDb()
+        //{
+        //    //arrange
+        //    var status = new StatusModel { Id = 2, Name = "Status2" };
 
-            var expected = new TaskModel
-            {
-                Id = 1,
-                Name = "Name1",
-                Description = "Description1",
-                StartDate = new DateTime(2022, 1, 1),
-                ExpiryDate = new DateTime(2022, 1, 7),
-                StatusId = 2,
-                StatusName = "Status2",
-                ManagerId = 2,
-                ManagerUserName = "Username2",
-                ProjectId = 1,
-                ProjectName = "Name1",
-                UserProjectIds = new List<int>() { 1 }
-            };
+        //    var expected = new TaskModel
+        //    {
+        //        Id = 1,
+        //        Name = "Name1",
+        //        Description = "Description1",
+        //        StartDate = new DateTime(2022, 1, 1),
+        //        ExpiryDate = new DateTime(2022, 1, 7),
+        //        StatusId = 2,
+        //        StatusName = "Status2",
+        //        ManagerId = 2,
+        //        ManagerUserName = "Username2",
+        //        ProjectId = 1,
+        //        ProjectName = "Name1",
+        //        UserProjectIds = new List<int>() { 1 }
+        //    };
 
-            //act
-            var content = new StringContent(JsonConvert.SerializeObject(status), Encoding.UTF8, "application/json");
-            var httpResponse = await _client.PutAsync(RequestUri+$"{1}/status", content);
+        //    //act
+        //    var content = new StringContent(JsonConvert.SerializeObject(status), Encoding.UTF8, "application/json");
+        //    var httpResponse = await _client.PutAsync(RequestUri+$"{1}/status", content);
 
-            //assert
-            httpResponse.EnsureSuccessStatusCode();
-            using (var test = _factory.Services.CreateScope())
-            {
-                var context = test.ServiceProvider.GetService<TaskDbContext>();
-                if (context != null)
-                {
-                    context.Assignments.Should().HaveCount(4);
+        //    //assert
+        //    httpResponse.EnsureSuccessStatusCode();
+        //    using (var test = _factory.Services.CreateScope())
+        //    {
+        //        var context = test.ServiceProvider.GetService<TaskDbContext>();
+        //        if (context != null)
+        //        {
+        //            context.Assignments.Should().HaveCount(4);
 
-                    var DbModel = await context.Assignments.FindAsync(1);
-                    DbModel.Should().NotBeNull().And.BeEquivalentTo(expected, options =>
-                        options.Excluding(x => x.Id).ExcludingMissingMembers());
-                }
-            }
-        }
+        //            var DbModel = await context.Assignments.FindAsync(1);
+        //            DbModel.Should().NotBeNull().And.BeEquivalentTo(expected, options =>
+        //                options.Excluding(x => x.Id).ExcludingMissingMembers());
+        //        }
+        //    }
+        //}
 
         [Test]
         public async Task TasksController_Update_ThrowsExceptionIfTaskStatusIsInvalid()

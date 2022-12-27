@@ -4,7 +4,7 @@ import { UsersAction, UsersActionEnum, UsersState } from "./types"
 
 const initialState: UsersState = {
     error: '',
-    isLoading: true,
+    isLoading: false,
     users: [] as IUser[]
 }
 

@@ -13,6 +13,7 @@ export const ProjectActionCreators = {
     setIsLoading: (payload: boolean): SetIsLoadingAction => ({ type: ProjectActionEnum.SET_IS_LOADING, payload }),
     loadProject: (id: number) => async (dispatch: AppDispatch) => {
         try {
+            dispatch(ProjectActionCreators.setProject({} as IProject))
             dispatch(ProjectActionCreators.setError(""))
             dispatch(ProjectActionCreators.setIsLoading(true))
             const response = await ProjectService.getProject(id)
@@ -21,63 +22,76 @@ export const ProjectActionCreators = {
                 dispatch(ProjectActionCreators.setProject(project))
             }
             else {
-                alert("Not found.")
                 dispatch(ProjectActionCreators.setError("Not found."))
             }
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(ProjectActionCreators.setError((e as Error).message))
         }
-        finally{
+        finally {
             dispatch(ProjectActionCreators.setIsLoading(false))
         }
     },
-    addProject:(project: IProject) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(ProjectActionCreators.setError(""))
-            dispatch(ProjectActionCreators.setProjectError({}as IProjectFormError))
-            dispatch(ProjectActionCreators.setIsLoading(true))
+    addProject: (project: IProject) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(ProjectActionCreators.setError(""))
+        dispatch(ProjectActionCreators.setProjectError({} as IProjectFormError))
+        dispatch(ProjectActionCreators.setIsLoading(true))
+        try {
             await ProjectService.addProject(project)
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(ProjectActionCreators.setError((e as Error).message))
             const ae = ((e as AxiosError).response!.data as any).errors
             const name = ae?.Name
             const description = ae?.Description
             const startDate = ae?.StartDate
             const expiryDate = ae?.ExpiryDate
-            dispatch(ProjectActionCreators.setProjectError({name,description,startDate, expiryDate } as IProjectFormError))
+            dispatch(ProjectActionCreators.setProjectError({ name, description, startDate, expiryDate } as IProjectFormError))
+            result = false
         }
-        finally{
+        finally {
             dispatch(ProjectActionCreators.setIsLoading(false))
+            return result
         }
     },
-    updateProject:(project: IProject) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(ProjectActionCreators.setIsLoading(true))
+    updateProject: (project: IProject) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(ProjectActionCreators.setError(""))
+        dispatch(ProjectActionCreators.setProjectError({} as IProjectFormError))
+        dispatch(ProjectActionCreators.setIsLoading(true))
+        try {
             await ProjectService.updateProject(project)
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(ProjectActionCreators.setError((e as Error).message))
+            const ae = ((e as AxiosError).response!.data as any).errors
+            const name = ae?.Name
+            const description = ae?.Description
+            const startDate = ae?.StartDate
+            const expiryDate = ae?.ExpiryDate
+            dispatch(ProjectActionCreators.setProjectError({ name, description, startDate, expiryDate } as IProjectFormError))
+            result = false
         }
-        finally{
+        finally {
             dispatch(ProjectActionCreators.setIsLoading(false))
+            return result
         }
     },
-    deleteProject:(id: number) => async (dispatch: AppDispatch)=>{
-        try{
-            dispatch(ProjectActionCreators.setIsLoading(true))
+    deleteProject: (id: number) => async (dispatch: AppDispatch) => {
+        let result = true
+        dispatch(ProjectActionCreators.setError(""))
+        dispatch(ProjectActionCreators.setIsLoading(true))
+        try {
             await ProjectService.deleteProject(id)
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(ProjectActionCreators.setError((e as Error).message))
+            result = false
         }
-        finally{
+        finally {
             dispatch(ProjectActionCreators.setIsLoading(false))
+            return result
         }
     }
 }

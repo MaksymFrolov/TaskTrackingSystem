@@ -43,7 +43,7 @@ namespace BuisnessLogicLayer.Services
 
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = string.Format("<h2 style='color:red;'>{0}</h2>", message.Content)
+                Text = string.Format("<h2>{0}</h2>", message.Content)
             };
 
             return emailMessage;

@@ -5,7 +5,7 @@ import { PositionAction, PositionActionEnum, PositionState } from "./types"
 
 const initialState: PositionState = {
     error: '',
-    isLoading: true,
+    isLoading: false,
     position: {} as IPosition,
     positionError: {} as IPositionFormError
 }
@@ -16,7 +16,7 @@ export default function positionReducer(state = initialState, action: PositionAc
             return { ...state, position: action.payload }
         case PositionActionEnum.SET_ERROR:
             return { ...state, error: action.payload }
-            case PositionActionEnum.SET_POSITION_ERROR:
+        case PositionActionEnum.SET_POSITION_ERROR:
             return { ...state, positionError: action.payload }
         case PositionActionEnum.SET_IS_LOADING:
             return { ...state, isLoading: action.payload }

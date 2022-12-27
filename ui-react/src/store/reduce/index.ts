@@ -14,7 +14,7 @@ import userproject from "./userproject";
 import userprojects from "./userprojects";
 import users from "./users";
 
-export default{
+export default {
     auth,
     position,
     positions,

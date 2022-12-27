@@ -4,7 +4,7 @@ import { TasksAction, TasksActionEnum, TasksState } from "./types"
 
 const initialState: TasksState = {
     error: '',
-    isLoading: true,
+    isLoading: false,
     tasks: [] as ITask[]
 }
 

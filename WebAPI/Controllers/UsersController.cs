@@ -8,7 +8,6 @@ namespace WebAPI.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "Administrator")]
     public class UsersController : ControllerBase
     {
         readonly IUserService userService;
@@ -52,6 +51,23 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<UserModel>> GetUserById(int id)
         {
             var model = await userService.GetByIdAsync(id);
+
+            if (model is null)
+                return NotFound();
+
+            return Ok(model);
+        }
+
+        /// <summary>Gets the user by email.</summary>
+        /// <param name="email">The email.</param>
+        /// <returns>
+        ///   OkObjectResult or NotFoundObjectResult
+        /// </returns>
+        [HttpGet("email/{email}")]
+        [Authorize]
+        public async Task<ActionResult<UserModel>> GetUserByEmail(string email)
+        {
+            var model = await userService.GetByEmailAsync(email);
 
             if (model is null)
                 return NotFound();

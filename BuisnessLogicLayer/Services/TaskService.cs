@@ -14,13 +14,16 @@ namespace BuisnessLogicLayer.Services
 
         readonly IMapper mapper;
 
+        readonly IEmailService emailService;
+
         /// <summary>Initializes a new instance of the <see cref="TaskService" /> class.</summary>
         /// <param name="unitOfWork">The unit of work.</param>
         /// <param name="mapper">The mapper.</param>
-        public TaskService(IUnitOfWork unitOfWork, IMapper mapper)
+        public TaskService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.emailService = emailService;
         }
 
         /// <summary>Adds the model asynchronous.</summary>
@@ -59,9 +62,25 @@ namespace BuisnessLogicLayer.Services
         /// <param name="id">The identifier.</param>
         public async Task DeleteAsync(int id)
         {
+            var users = await GetAllUsersByTaskIdAsync(id);
+
+            var task = await GetByIdAsync(id);
+
             await unitOfWork.AssignmentRepository.DeleteByIdAsync(id);
 
             await unitOfWork.SaveAsync();
+
+            if (users.Count() > 0)
+            {
+                var message = new MessageModel(users.Select(t => t.Email),
+                $"Task you have been working has been deleted!",
+                $"Hello! We are to inform that your task has been deleted!\n\n" +
+                $"Please, check out what's new. Maybe, it's time to relax?\n" +
+                $"Tip: the best way is to change your activity.\n" +
+                $"Thanks, The Task tracking system team.");
+
+                await emailService.SendEmailAsync(message);
+            }
         }
 
         /// <summary>Deletes the status asynchronous.</summary>
@@ -128,6 +147,19 @@ namespace BuisnessLogicLayer.Services
             unitOfWork.AssignmentRepository.Update(task);
 
             await unitOfWork.SaveAsync();
+
+            var users = await GetAllUsersByTaskIdAsync(task.Id);
+
+            if (users.Count() > 0)
+            {
+                var message = new MessageModel(users.Select(t => t.Email),
+                $"Your task has been updated!",
+                $"Hello! We are to inform that your task has been updated!\n\n" +
+                $"Please check out what's new. Maybe this will help you to make your assignment better!\n" +
+                $"Thanks, The Task tracking system team.");
+
+                await emailService.SendEmailAsync(message);
+            }
         }
 
         /// <summary>Updates the status asynchronous.</summary>
@@ -165,6 +197,9 @@ namespace BuisnessLogicLayer.Services
             ValidateStatus(status);
 
             var task = await unitOfWork.AssignmentRepository.GetByIdWithDetailsAsync(id);
+
+            if (task.ExpiryDate.Subtract(DateTime.Now).TotalMinutes < 0)
+                throw new TaskTrackingException();
 
             task.Status = mapper.Map<AssignmentStatus>(status);
 

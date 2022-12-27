@@ -4,7 +4,7 @@ import { UserProjectsAction, UserProjectsActionEnum, UserProjectsState } from ".
 
 const initialState: UserProjectsState = {
     error: '',
-    isLoading: true,
+    isLoading: false,
     userProjects: [] as IUserProject[]
 }
 

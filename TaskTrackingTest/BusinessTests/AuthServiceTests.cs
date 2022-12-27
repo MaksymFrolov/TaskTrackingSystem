@@ -35,7 +35,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = TokenModel;
 
-            var authService = new AuthService(fakeUserManager.Object, mockGenerateTokenService.Object);
+            var authService = new AuthService(fakeUserManager.Object, mockGenerateTokenService.Object, null);
 
             //Act
             var actual = await authService.Login(loginModel);
@@ -72,7 +72,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = TokenModel;
 
-            var authService = new AuthService(fakeUserManager.Object, mockGenerateTokenService.Object);
+            var authService = new AuthService(fakeUserManager.Object, mockGenerateTokenService.Object, null);
 
             var loginModel = new LoginModel
             {
@@ -114,7 +114,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = TokenModel;
 
-            var authService = new AuthService(fakeUserManager.Object, mockGenerateTokenService.Object);
+            var authService = new AuthService(fakeUserManager.Object, mockGenerateTokenService.Object, null);
 
             var loginModel = new LoginModel
             {

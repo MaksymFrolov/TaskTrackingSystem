@@ -1,5 +1,5 @@
-export interface IPosition{
-    id:number
-    name:string
-    description:string
+export interface IPosition {
+    id: number
+    name: string
+    description: string
 }

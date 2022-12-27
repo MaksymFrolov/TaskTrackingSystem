@@ -16,10 +16,6 @@ namespace BuisnessLogicLayer.Validation.Validators
                 .NotEmpty()
                 .MinimumLength(1)
                 .MaximumLength(50);
-
-            RuleFor(t => t.NormalizedName)
-                .NotEmpty()
-                .Equal(t=>t.Name.ToUpper()).WithMessage("The string must contain upper case letters.");
         }
     }
 }

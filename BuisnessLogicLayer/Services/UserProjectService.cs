@@ -14,13 +14,16 @@ namespace BuisnessLogicLayer.Services
 
         readonly IMapper mapper;
 
+        readonly IEmailService emailService;
+
         /// <summary>Initializes a new instance of the <see cref="UserProjectService" /> class.</summary>
         /// <param name="unitOfWork">The unit of work.</param>
         /// <param name="mapper">The mapper.</param>
-        public UserProjectService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserProjectService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.emailService = emailService;
         }
 
         /// <summary>Adds the UserProjectModel asynchronous.</summary>
@@ -34,6 +37,14 @@ namespace BuisnessLogicLayer.Services
             await unitOfWork.UserProjectRepository.AddAsync(userProject);
 
             await unitOfWork.SaveAsync();
+
+            var message = new MessageModel(model.UserEmail,
+                "You have a new task!",
+                $"Hello! We are to inform that you have been added to a new task!\n\n" +
+                $"Please check it out! Maybe it's your moment!\n" +
+                $"Thanks, The Task tracking system team.");
+
+            await emailService.SendEmailAsync(message);
         }
 
         /// <summary>Adds the user projects asynchronous.</summary>
@@ -50,6 +61,14 @@ namespace BuisnessLogicLayer.Services
             }
 
             await unitOfWork.SaveAsync();
+
+            var message = new MessageModel(models.Select(t => t.UserEmail),
+                "You have a new task!",
+                $"Hello! We are to inform that you have been added to a new task!\n\n" +
+                $"Please check it out! Maybe it's your moment!\n" +
+                $"Thanks, The Task tracking system team.");
+
+            await emailService.SendEmailAsync(message);
         }
 
         /// <summary>Adds the position asynchronous.</summary>
@@ -69,9 +88,19 @@ namespace BuisnessLogicLayer.Services
         /// <param name="id">The identifier.</param>
         public async Task DeleteAsync(int id)
         {
+            var userProject = await GetByIdAsync(id);
+
             await unitOfWork.UserProjectRepository.DeleteByIdAsync(id);
 
             await unitOfWork.SaveAsync();
+
+            var message = new MessageModel(userProject.UserEmail,
+                $"Hello! You have been excluded from the task {userProject.TaskName}.",
+                $"Hello! We have found out that you have been excluded from the task!\n\n" +
+                $"May be it's time to upgrade yourself? We wish to to get back as soon as possible!\n" +
+                $"Thanks, The Task tracking system team.");
+
+            await emailService.SendEmailAsync(message);
         }
 
         /// <summary>Deletes the user projects asynchronous.</summary>

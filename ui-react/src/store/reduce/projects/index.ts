@@ -4,7 +4,7 @@ import { ProjectsAction, ProjectsActionEnum, ProjectsState } from "./types"
 
 const initialState: ProjectsState = {
     error: '',
-    isLoading: true,
+    isLoading: false,
     projects: [] as IProject[]
 }
 

@@ -169,8 +169,7 @@ namespace TaskTrackingTest.IntegrationTests
             var role = new RoleModel
             {
                 Id = 4,
-                Name = "Name4",
-                NormalizedName= "NAME4"
+                Name = "Name4"
             };
 
             //act
@@ -187,14 +186,13 @@ namespace TaskTrackingTest.IntegrationTests
         }
 
         [Test]
-        public async Task UsersController_Add_ThrowsExceptionIfStatusIsInvalid()
+        public async Task UsersController_Add_ThrowsExceptionIfNameIsInvalid()
         {
             //arrange
             var role = new RoleModel
             {
                 Id = 4,
-                Name = "",
-                NormalizedName = "NAME4"
+                Name = ""
             };
 
             //act
@@ -212,8 +210,7 @@ namespace TaskTrackingTest.IntegrationTests
             var role = new RoleModel
             {
                 Id = 1,
-                Name = "Name4",
-                NormalizedName="NAME4"
+                Name = "Name4"
             };
 
             //act
@@ -243,8 +240,7 @@ namespace TaskTrackingTest.IntegrationTests
             var role = new RoleModel
             {
                 Id = 1,
-                Name = "",
-                NormalizedName = "NAME4"
+                Name = ""
             };
 
             //act
@@ -411,20 +407,17 @@ namespace TaskTrackingTest.IntegrationTests
                 new RoleModel
                 {
                     Id = 1,
-                    Name = "User",
-                    NormalizedName = "USER"
+                    Name = "User"
                 },
                 new RoleModel
                 {
                     Id = 2,
-                    Name = "Manager",
-                    NormalizedName = "MANAGER"
+                    Name = "Manager"
                 },
                 new RoleModel
                 {
                     Id = 3,
-                    Name = "Administrator",
-                    NormalizedName = "ADMINISTRATOR"
+                    Name = "Administrator"
                 }
             };
 

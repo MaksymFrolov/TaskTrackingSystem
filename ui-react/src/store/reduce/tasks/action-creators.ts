@@ -4,7 +4,7 @@ import { ITask } from "../../../models/ITask"
 import { SetErrorAction, SetIsLoadingAction, SetTasksAction, TasksActionEnum } from "./types"
 
 
-export enum GetTasksEnum{
+export enum GetTasksEnum {
     BY_USER_ID = "UserTask",
     BY_MANAGER_ID = "ManagerTask",
     BY_PROJECT_ID = "Project",
@@ -17,43 +17,42 @@ export const TasksActionCreators = {
     setIsLoading: (payload: boolean): SetIsLoadingAction => ({ type: TasksActionEnum.SET_IS_LOADING, payload }),
     loadTasks: (type: GetTasksEnum, id?: number) => async (dispatch: AppDispatch) => {
         try {
+            dispatch(TasksActionCreators.setTasks([] as ITask[]))
             dispatch(TasksActionCreators.setError(""))
             dispatch(TasksActionCreators.setIsLoading(true))
             let response
-            switch(type){
+            switch (type) {
                 case GetTasksEnum.ALL_TASK:
                     response = await TaskService.getTasks()
                     break
                 case GetTasksEnum.BY_PROJECT_ID:
-                    if(id){
+                    if (id) {
                         response = await TaskService.getTasksByProjectId(id)
                     }
                     break
                 case GetTasksEnum.BY_USER_ID:
-                    if(id){
+                    if (id) {
                         response = await TaskService.getTasksByUserId(id)
                     }
                     break
                 case GetTasksEnum.BY_MANAGER_ID:
-                    if(id){
+                    if (id) {
                         response = await TaskService.getTasksByManagerId(id)
                     }
                     break
             }
             const tasks = response?.data
-            if (tasks?.length != 0) {
+            if (tasks?.length !== 0) {
                 dispatch(TasksActionCreators.setTasks(tasks!))
             }
             else {
-                alert("Not found.")
                 dispatch(TasksActionCreators.setError("Not found."))
             }
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(TasksActionCreators.setError((e as Error).message))
         }
-        finally{
+        finally {
             dispatch(TasksActionCreators.setIsLoading(false))
         }
     }

@@ -1,8 +1,10 @@
 import { FC } from "react"
 import Button from "react-bootstrap/esm/Button"
 import Card from "react-bootstrap/esm/Card"
+import { useNavigate } from "react-router-dom"
 import { useActions } from "../hooks/useActions"
 import { useTypedSelector } from "../hooks/useTypedSelector"
+import { RoleNames } from "../models/IRole"
 import { IUserProject } from "../models/IUserProject"
 import { UserProjectActionCreators } from "../store/reduce/userproject/action-creators"
 
@@ -13,13 +15,20 @@ interface UserProjectCardProps {
 
 const UserProjectCard: FC<UserProjectCardProps> = ({ userProject }) => {
     const { deleteUserProject } = useActions(UserProjectActionCreators)
-    const { isAuth, roles } = useTypedSelector(state => state.auth)
-    const submit = () => {
-        deleteUserProject( userProject.id)
+    const { roles } = useTypedSelector(state => state.auth)
+    const navigate = useNavigate()
+    const deletePU = async () => {
+        const result = await deleteUserProject(userProject.id)
+        if (result) {
+            navigate(0)
+        }
+    }
+    const updatePU = () => {
+        navigate(`/update/user/project/${userProject.id}`)
     }
     return (
         <Card
-            style={{ width: 600, marginRight: 15, marginLeft: 15 }}
+            style={{ width: 300, marginRight: 15, marginLeft: 15 }}
         >
             <Card.Body>
                 <Card.Title>{userProject.id}</Card.Title>
@@ -39,11 +48,16 @@ const UserProjectCard: FC<UserProjectCardProps> = ({ userProject }) => {
                     }
                 </p>
                 {
-                    roles.find(t => t.name == "Manager")
+                    roles.find(t => t.name == RoleNames.MANAGER)
                     &&
-                    <Button onClick={() => submit()}>
-                        Delete
-                    </Button>
+                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                        <Button onClick={() => deletePU()}>
+                            Delete
+                        </Button>
+                        <Button onClick={() => updatePU()}>
+                            Update
+                        </Button>
+                    </div>
                 }
             </Card.Body>
         </Card>

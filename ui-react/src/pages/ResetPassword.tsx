@@ -1,17 +1,17 @@
 import { FC } from "react"
 import Card from "react-bootstrap/esm/Card"
 import Stack from "react-bootstrap/esm/Stack"
-import UpdateStatusForm from "../components/UpdateStatusFpot"
+import ResetPasswordForm from "../components/ResetPasswordForm"
 
 
-const UpdateStatusFfpot:FC=()=>{
-    return(
+const ResetPassword: FC = () => {
+    return (
         <Stack className="d-flex flex-column min-vh-100 justify-content-center align-items-center">
             <Card className="p-5">
-                <UpdateStatusForm />
+                <ResetPasswordForm />
             </Card>
         </Stack>
     )
 }
 
-export default UpdateStatusFfpot
+export default ResetPassword

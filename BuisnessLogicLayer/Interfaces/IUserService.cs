@@ -20,6 +20,13 @@ namespace BuisnessLogicLayer.Interfaces
         /// </returns>
         Task<UserModel> GetByIdAsync(int id);
 
+        /// <summary>Gets the user by email asynchronous.</summary>
+        /// <param name="email">The email.</param>
+        /// <returns>
+        ///   UserModel
+        /// </returns>
+        Task<UserModel> GetByEmailAsync(string email);
+
         /// <summary>Adds user the asynchronous.</summary>
         /// <param name="model">The model.</param>
         Task AddAsync(RegisterUserModel model);

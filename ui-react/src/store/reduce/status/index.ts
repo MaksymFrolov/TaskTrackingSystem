@@ -5,7 +5,7 @@ import { StatusAction, StatusActionEnum, StatusState } from "./types"
 
 const initialState: StatusState = {
     error: '',
-    isLoading: true,
+    isLoading: false,
     status: {} as IStatus,
     statusError: {} as IStatusFormError
 }

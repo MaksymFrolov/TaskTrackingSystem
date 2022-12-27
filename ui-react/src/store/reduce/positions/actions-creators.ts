@@ -8,19 +8,20 @@ export const PositionsActionCreators = {
     setPositions: (positions: IPosition[]): SetPositionsAction => ({ type: PositionsActionEnum.SET_POSITIONS, payload: positions }),
     setError: (payload: string): SetErrorAction => ({ type: PositionsActionEnum.SET_ERROR, payload }),
     setIsLoading: (payload: boolean): SetIsLoadingAction => ({ type: PositionsActionEnum.SET_IS_LOADING, payload }),
-    loadPositions: (id?:number) => async (dispatch: AppDispatch) => {
+    loadPositions: (id?: number) => async (dispatch: AppDispatch) => {
         try {
+            dispatch(PositionsActionCreators.setPositions([] as IPosition[]))
             dispatch(PositionsActionCreators.setError(""))
             dispatch(PositionsActionCreators.setIsLoading(true))
             let response
-            if(id){
+            if (id) {
                 response = await PositionService.getPositionsByUserId(id)
-            } 
-            else{
+            }
+            else {
                 response = await PositionService.getPositions()
             }
             const positions = response.data
-            if (positions.length != 0) {
+            if (positions.length !== 0) {
                 dispatch(PositionsActionCreators.setPositions(positions))
             }
             else {
@@ -28,10 +29,9 @@ export const PositionsActionCreators = {
             }
         }
         catch (e) {
-            alert((e as Error).message)
             dispatch(PositionsActionCreators.setError((e as Error).message))
         }
-        finally{
+        finally {
             dispatch(PositionsActionCreators.setIsLoading(false))
         }
     }

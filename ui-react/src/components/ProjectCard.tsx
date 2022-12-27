@@ -2,7 +2,7 @@ import { FC } from "react"
 import Card from "react-bootstrap/esm/Card"
 import { useNavigate } from "react-router-dom"
 import { IProject } from "../models/IPoject"
-import { convertDate, convertDateWithTime } from "../utils/convertDate"
+import { convertDate } from "../utils/convertDate"
 
 
 interface PrjectCardProps {

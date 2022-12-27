@@ -12,15 +12,12 @@ namespace WebAPI.Controllers
     {
         readonly IUserProjectService userProjectService;
 
-        readonly IEmailService emailService;
-
         /// <summary>Initializes a new instance of the <see cref="UserProjectsController" /> class.</summary>
         /// <param name="userProjectService">The user project service.</param>
         /// <param name="emailService">The email service.</param>
-        public UserProjectsController(IUserProjectService userProjectService, IEmailService emailService)
+        public UserProjectsController(IUserProjectService userProjectService)
         {
             this.userProjectService = userProjectService;
-            this.emailService = emailService;
         }
 
         /// <summary>Gets the user projects.</summary>
@@ -90,10 +87,6 @@ namespace WebAPI.Controllers
         {
             await userProjectService.AddUserProjectsAsync(models);
 
-            var message = new MessageModel(models.Select(t => t.UserEmail), "New Task", "You have a new Task.");
-
-            await emailService.SendEmailAsync(message);
-
             return Ok();
         }
 
@@ -107,10 +100,6 @@ namespace WebAPI.Controllers
         public async Task<ActionResult> AddUserProject([FromBody] UserProjectModel model)
         {
             await userProjectService.AddAsync(model);
-
-            var message = new MessageModel(model.UserEmail, "New Task", "You have a new Task.");
-
-            await emailService.SendEmailAsync(message);
 
             return Ok();
         }
@@ -139,10 +128,6 @@ namespace WebAPI.Controllers
         public async Task<ActionResult> UpdateUserProject([FromBody] UserProjectModel model)
         {
             await userProjectService.UpdateAsync(model);
-
-            var message = new MessageModel(model.UserEmail, "Updated Task", "Your task or position has been updated.");
-
-            await emailService.SendEmailAsync(message);
 
             return Ok();
         }
