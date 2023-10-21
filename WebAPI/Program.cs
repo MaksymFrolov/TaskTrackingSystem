@@ -17,6 +17,8 @@ builder.Services.AddCors();
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMediatR(typeof(Program).Assembly);  
+
 var configuration = builder.Configuration;
 
 builder.Services.ConfigureSqlContext(configuration);
@@ -25,7 +27,7 @@ builder.Services.ConfigureIdentity();
 
 builder.Logging.ConfigureLogger(configuration);
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUnitOfWork1, UnitOfWork1>();
 
 builder.Services.AddAutoMapper(typeof(TaskTrackingProfile).Assembly);
 

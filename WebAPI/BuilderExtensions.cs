@@ -43,7 +43,7 @@ namespace WebAPI
 
             services.AddTransient<IEmailService, EmailService>();
 
-            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserService1, UserService1>();
 
             services.AddTransient<IGenerateTokenService, GenerateTokenService>();
 
@@ -53,7 +53,7 @@ namespace WebAPI
 
             services.AddTransient<ITokenService, TokenService>();
 
-            services.AddTransient<IUserProjectService, UserProjectService>();
+            services.AddTransient<IUserProjectService1, UserProjectService1>();
         }
 
         public static void ConfigureOptions(this IServiceCollection services, IConfiguration configuration)

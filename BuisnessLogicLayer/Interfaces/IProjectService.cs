@@ -5,7 +5,7 @@ namespace BuisnessLogicLayer.Interfaces
     /// <summary>
     ///   Describes a project service
     /// </summary>
-    public interface IProjectService : ICrud<ProjectModel>
+    public interface IProjectService : ICrud1<ProjectModel>
     {
         /// <summary>Gets all tasks by project identifier asynchronous.</summary>
         /// <param name="id">The identifier.</param>

@@ -17,7 +17,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectStatusRepository = new ProjectStatusRepository(context);
+            var projectStatusRepository = new ProjectStatusRepository1(context);
 
             var expected = ExpectedProjectStatuses.FirstOrDefault(x => x.Id == id);
 
@@ -34,7 +34,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectStatusRepository = new ProjectStatusRepository(context);
+            var projectStatusRepository = new ProjectStatusRepository1(context);
 
             //Act
             var actual = await projectStatusRepository.GetAllAsync();
@@ -49,7 +49,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectStatusRepository = new ProjectStatusRepository(context);
+            var projectStatusRepository = new ProjectStatusRepository1(context);
 
             var projectStatus = new ProjectStatus { Id = 4, Name = "Status4" };
 
@@ -68,7 +68,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectStatusRepository = new ProjectStatusRepository(context);
+            var projectStatusRepository = new ProjectStatusRepository1(context);
 
             //Act
             await projectStatusRepository.DeleteByIdAsync(1);
@@ -85,7 +85,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectStatusRepository = new ProjectStatusRepository(context);
+            var projectStatusRepository = new ProjectStatusRepository1(context);
 
             var projectStatus = new ProjectStatus
             {

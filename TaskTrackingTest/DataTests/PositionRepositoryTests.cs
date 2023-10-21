@@ -17,7 +17,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var positionRepository = new PositionRepository(context);
+            var positionRepository = new PositionRepository1(context);
 
             var expected = ExpectedPositions.FirstOrDefault(x => x.Id == id);
 
@@ -34,7 +34,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var positionRepository = new PositionRepository(context);
+            var positionRepository = new PositionRepository1(context);
 
             //Act
             var actual = await positionRepository.GetAllAsync();
@@ -49,7 +49,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var positionRepository = new PositionRepository(context);
+            var positionRepository = new PositionRepository1(context);
 
             var position = new Position { Id = 4, Name = "Status4", Description = "Description4" };
 
@@ -68,7 +68,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var positionRepository = new PositionRepository(context);
+            var positionRepository = new PositionRepository1(context);
 
             //Act
             await positionRepository.DeleteByIdAsync(1);
@@ -85,7 +85,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var positionRepository = new PositionRepository(context);
+            var positionRepository = new PositionRepository1(context);
 
             var position = new Position
             {

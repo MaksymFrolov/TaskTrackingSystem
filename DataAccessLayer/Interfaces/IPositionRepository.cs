@@ -1,11 +1,8 @@
-﻿using DataAccessLayer.Entities;
+using DataAccessLayer.Entities;
 
-namespace DataAccessLayer.Interfaces
+namespace DataAccessLayer.Interfaces;
+
+public interface IPositionRepository : IRepository<Position>
 {
-    /// <summary>
-    ///   Describes a position repository
-    /// </summary>
-    public interface IPositionRepository : IRepository<Position>
-    {
-    }
+    
 }

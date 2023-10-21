@@ -17,7 +17,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectRepository = new ProjectRepository(context);
+            var projectRepository = new ProjectRepository1(context);
 
             var expected = ExpectedProjects.FirstOrDefault(x => x.Id == id);
 
@@ -34,7 +34,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectRepository = new ProjectRepository(context);
+            var projectRepository = new ProjectRepository1(context);
 
             //Act
             var actual = await projectRepository.GetAllAsync();
@@ -49,7 +49,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectRepository = new ProjectRepository(context);
+            var projectRepository = new ProjectRepository1(context);
 
             var project = new Project { Id = 4, Name = "Name4", Description = "Description4", StartDate = DateTime.Now.AddDays(-7), ExpiryDate = DateTime.Now.AddDays(7), StatusId = 1 };
 
@@ -68,7 +68,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectRepository = new ProjectRepository(context);
+            var projectRepository = new ProjectRepository1(context);
 
             //Act
             await projectRepository.DeleteByIdAsync(1);
@@ -85,7 +85,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectRepository = new ProjectRepository(context);
+            var projectRepository = new ProjectRepository1(context);
 
             var project = new Project
             {
@@ -120,7 +120,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectRepository = new ProjectRepository(context);
+            var projectRepository = new ProjectRepository1(context);
 
             var expected = ExpectedProjects.FirstOrDefault(x => x.Id == 1);
 
@@ -153,7 +153,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var projectRepository = new ProjectRepository(context);
+            var projectRepository = new ProjectRepository1(context);
 
             //Act
             var actual = await projectRepository.GetAllWithDetailsAsync();

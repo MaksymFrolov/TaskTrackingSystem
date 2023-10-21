@@ -7,11 +7,11 @@ namespace DataAccessLayer.DataBase.Repositories
     /// <summary>
     ///   Implements an assignmentRepository
     /// </summary>
-    public class AssignmentRepository : GenericRepository<Assignment>, IAssignmentRepository
+    public class AssignmentRepository1 : GenericRepository1<Assignment>, IAssignmentRepository1
     {
-        /// <summary>Initializes a new instance of the <see cref="AssignmentRepository" /> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="AssignmentRepository1" /> class.</summary>
         /// <param name="dbContext">The database context.</param>
-        public AssignmentRepository(TaskDbContext dbContext) : base(dbContext)
+        public AssignmentRepository1(TaskDbContext dbContext) : base(dbContext)
         {
 
         }

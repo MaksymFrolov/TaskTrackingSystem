@@ -10,18 +10,18 @@ namespace BuisnessLogicLayer.Services
     /// </summary>
     public class TaskService : ITaskService
     {
-        readonly IUnitOfWork unitOfWork;
+        readonly IUnitOfWork1 _unitOfWork1;
 
         readonly IMapper mapper;
 
         readonly IEmailService emailService;
 
         /// <summary>Initializes a new instance of the <see cref="TaskService" /> class.</summary>
-        /// <param name="unitOfWork">The unit of work.</param>
+        /// <param name="unitOfWork1">The unit of work.</param>
         /// <param name="mapper">The mapper.</param>
-        public TaskService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService)
+        public TaskService(IUnitOfWork1 unitOfWork1, IMapper mapper, IEmailService emailService)
         {
-            this.unitOfWork = unitOfWork;
+            this._unitOfWork1 = unitOfWork1;
             this.mapper = mapper;
             this.emailService = emailService;
         }
@@ -34,15 +34,15 @@ namespace BuisnessLogicLayer.Services
             if (model is null)
                 throw new TaskTrackingException("Model is null");
 
-            var project = await unitOfWork.ProjectRepository.GetByIdAsync(model.ProjectId);
+            var project = await _unitOfWork1.ProjectRepository1.GetByIdAsync(model.ProjectId);
 
             ValidateTask(model, project);
 
             var task = mapper.Map<Assignment>(model);
 
-            await unitOfWork.AssignmentRepository.AddAsync(task);
+            await _unitOfWork1.AssignmentRepository1.AddAsync(task);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
         }
 
         /// <summary>Adds the status asynchronous.</summary>
@@ -53,9 +53,9 @@ namespace BuisnessLogicLayer.Services
 
             var status = mapper.Map<AssignmentStatus>(model);
 
-            await unitOfWork.AssignmentStatusRepository.AddAsync(status);
+            await _unitOfWork1.AssignmentStatusRepository1.AddAsync(status);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
         }
 
         /// <summary>Deletes the taskModel by id asynchronous.</summary>
@@ -66,9 +66,9 @@ namespace BuisnessLogicLayer.Services
 
             var task = await GetByIdAsync(id);
 
-            await unitOfWork.AssignmentRepository.DeleteByIdAsync(id);
+            await _unitOfWork1.AssignmentRepository1.DeleteByIdAsync(id);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
 
             if (users.Count() > 0)
             {
@@ -87,16 +87,16 @@ namespace BuisnessLogicLayer.Services
         /// <param name="id">The identifier.</param>
         public async Task DeleteStatusAsync(int id)
         {
-            await unitOfWork.AssignmentStatusRepository.DeleteByIdAsync(id);
+            await _unitOfWork1.AssignmentStatusRepository1.DeleteByIdAsync(id);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
         }
 
         /// <summary>Gets all taskModels asynchronous.</summary>
         /// <returns>Models</returns>
         public async Task<IEnumerable<TaskModel>> GetAllAsync()
         {
-            var list = await unitOfWork.AssignmentRepository.GetAllWithDetailsAsync();
+            var list = await _unitOfWork1.AssignmentRepository1.GetAllWithDetailsAsync();
 
             return mapper.Map<IEnumerable<TaskModel>>(list);
         }
@@ -105,7 +105,7 @@ namespace BuisnessLogicLayer.Services
         /// <returns>StatusModels</returns>
         public async Task<IEnumerable<StatusModel>> GetAllStatusesAsync()
         {
-            var list = await unitOfWork.AssignmentStatusRepository.GetAllAsync();
+            var list = await _unitOfWork1.AssignmentStatusRepository1.GetAllAsync();
 
             return mapper.Map<IEnumerable<StatusModel>>(list);
         }
@@ -115,7 +115,7 @@ namespace BuisnessLogicLayer.Services
         /// <returns>TokenModel</returns>
         public async Task<TaskModel> GetByIdAsync(int id)
         {
-            var model = await unitOfWork.AssignmentRepository.GetByIdWithDetailsAsync(id);
+            var model = await _unitOfWork1.AssignmentRepository1.GetByIdWithDetailsAsync(id);
 
             return mapper.Map<TaskModel>(model);
         }
@@ -125,7 +125,7 @@ namespace BuisnessLogicLayer.Services
         /// <returns>StatusModel</returns>
         public async Task<StatusModel> GetStatusByIdAsync(int id)
         {
-            var model = await unitOfWork.AssignmentStatusRepository.GetByIdAsync(id);
+            var model = await _unitOfWork1.AssignmentStatusRepository1.GetByIdAsync(id);
 
             return mapper.Map<StatusModel>(model);
         }
@@ -138,15 +138,15 @@ namespace BuisnessLogicLayer.Services
             if (model is null)
                 throw new TaskTrackingException("Model is null");
 
-            var project = await unitOfWork.ProjectRepository.GetByIdAsync(model.ProjectId);
+            var project = await _unitOfWork1.ProjectRepository1.GetByIdAsync(model.ProjectId);
 
             ValidateTask(model, project);
 
             var task = mapper.Map<Assignment>(model);
 
-            unitOfWork.AssignmentRepository.Update(task);
+            _unitOfWork1.AssignmentRepository1.Update(task);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
 
             var users = await GetAllUsersByTaskIdAsync(task.Id);
 
@@ -170,9 +170,9 @@ namespace BuisnessLogicLayer.Services
 
             var status = mapper.Map<AssignmentStatus>(model);
 
-            unitOfWork.AssignmentStatusRepository.Update(status);
+            _unitOfWork1.AssignmentStatusRepository1.Update(status);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
         }
 
         /// <summary>Gets all users by task identifier asynchronous.</summary>
@@ -180,7 +180,7 @@ namespace BuisnessLogicLayer.Services
         /// <returns>UserModels</returns>
         public async Task<IEnumerable<UserModel>> GetAllUsersByTaskIdAsync(int id)
         {
-            var list = (await unitOfWork.AssignmentRepository
+            var list = (await _unitOfWork1.AssignmentRepository1
                 .GetByIdWithDetailsAsync(id))
                 .UserProjects
                 .Select(t => t.User)
@@ -196,14 +196,14 @@ namespace BuisnessLogicLayer.Services
         {
             ValidateStatus(status);
 
-            var task = await unitOfWork.AssignmentRepository.GetByIdWithDetailsAsync(id);
+            var task = await _unitOfWork1.AssignmentRepository1.GetByIdWithDetailsAsync(id);
 
             if (task.ExpiryDate.Subtract(DateTime.Now).TotalMinutes < 0)
                 throw new TaskTrackingException();
 
             task.Status = mapper.Map<AssignmentStatus>(status);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
         }
 
         static void ValidateTask(TaskModel model, Project project)

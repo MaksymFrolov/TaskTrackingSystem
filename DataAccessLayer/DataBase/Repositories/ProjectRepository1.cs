@@ -7,11 +7,11 @@ namespace DataAccessLayer.DataBase.Repositories
     /// <summary>
     ///  Implements a projectRepository
     /// </summary>
-    public class ProjectRepository : GenericRepository<Project>, IProjectRepository
+    public class ProjectRepository1 : GenericRepository1<Project>, IProjectRepository1
     {
-        /// <summary>Initializes a new instance of the <see cref="ProjectRepository" /> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="ProjectRepository1" /> class.</summary>
         /// <param name="dbContext">The database context.</param>
-        public ProjectRepository(TaskDbContext dbContext) : base(dbContext)
+        public ProjectRepository1(TaskDbContext dbContext) : base(dbContext)
         {
 
         }

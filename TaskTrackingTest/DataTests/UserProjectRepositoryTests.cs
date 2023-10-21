@@ -19,7 +19,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var userProjectRepository = new UserProjectRepository(context);
+            var userProjectRepository = new UserProjectRepository1(context);
 
             var expected = ExpectedUserProjects.FirstOrDefault(x => x.Id == id);
 
@@ -36,7 +36,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var userProjectRepository = new UserProjectRepository(context);
+            var userProjectRepository = new UserProjectRepository1(context);
 
             //Act
             var actual = await userProjectRepository.GetAllAsync();
@@ -51,7 +51,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var userProjectRepository = new UserProjectRepository(context);
+            var userProjectRepository = new UserProjectRepository1(context);
 
             var userProject = new UserProject { Id = 6, TaskId = 3, PositionId = 2, UserId = 1 };
 
@@ -70,7 +70,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var userProjectRepository = new UserProjectRepository(context);
+            var userProjectRepository = new UserProjectRepository1(context);
 
             //Act
             await userProjectRepository.DeleteByIdAsync(1);
@@ -87,7 +87,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var userProjectRepository = new UserProjectRepository(context);
+            var userProjectRepository = new UserProjectRepository1(context);
 
             var userProject = new UserProject
             {
@@ -118,7 +118,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var userProjectRepository = new UserProjectRepository(context);
+            var userProjectRepository = new UserProjectRepository1(context);
 
             //Act
             var actual = await userProjectRepository.GetAllWithDetailsAsync();

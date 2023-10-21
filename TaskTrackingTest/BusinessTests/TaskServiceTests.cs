@@ -14,10 +14,10 @@ namespace TaskTrackingTest.BusinessTests
             //Arrange
             var expected = TaskModels.ToList();
 
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
 
             mockUnitOfWork
-                .Setup(x => x.AssignmentRepository.GetAllWithDetailsAsync())
+                .Setup(x => x.AssignmentRepository1.GetAllWithDetailsAsync())
                 .ReturnsAsync(TaskEntities.AsEnumerable());
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
@@ -36,10 +36,10 @@ namespace TaskTrackingTest.BusinessTests
             //Arrange
             var expected = StatusModels;
 
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
 
             mockUnitOfWork
-                .Setup(x => x.AssignmentStatusRepository.GetAllAsync())
+                .Setup(x => x.AssignmentStatusRepository1.GetAllAsync())
                 .ReturnsAsync(TaskStatusEntities.AsEnumerable());
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
@@ -59,9 +59,9 @@ namespace TaskTrackingTest.BusinessTests
             //Arrange
             var expected = TaskModels.FirstOrDefault(x => x.Id == id);
 
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
             mockUnitOfWork
-                .Setup(x => x.AssignmentRepository.GetByIdWithDetailsAsync(It.IsAny<int>()))
+                .Setup(x => x.AssignmentRepository1.GetByIdWithDetailsAsync(It.IsAny<int>()))
                 .ReturnsAsync(TaskEntities.FirstOrDefault(x => x.Id == id));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
@@ -82,9 +82,9 @@ namespace TaskTrackingTest.BusinessTests
             //Arrange
             var expected = StatusModels.FirstOrDefault(x => x.Id == id);
 
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
             mockUnitOfWork
-                .Setup(x => x.AssignmentStatusRepository.GetByIdAsync(It.IsAny<int>()))
+                .Setup(x => x.AssignmentStatusRepository1.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(TaskStatusEntities.FirstOrDefault(x => x.Id == id));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
@@ -100,10 +100,10 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_AddAsync_AddsTask()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentRepository.AddAsync(It.IsAny<Assignment>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentRepository1.AddAsync(It.IsAny<Assignment>()));
             mockUnitOfWork
-                .Setup(t => t.ProjectRepository.GetByIdAsync(It.IsAny<int>()))
+                .Setup(t => t.ProjectRepository1.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProjectEntities.FirstOrDefault(t => t.Id == 1));
 
 
@@ -114,7 +114,7 @@ namespace TaskTrackingTest.BusinessTests
             await taskService.AddAsync(task);
 
             //Assert
-            mockUnitOfWork.Verify(x => x.AssignmentRepository.AddAsync(It.Is<Assignment>(c => c.Id == task.Id && c.StatusId == task.StatusId && c.Name == task.Name && c.Description == task.Description && c.StartDate == task.StartDate && c.ExpiryDate == task.ExpiryDate && c.ManagerId==task.ManagerId && c.ProjectId==task.ProjectId)), Times.Once);
+            mockUnitOfWork.Verify(x => x.AssignmentRepository1.AddAsync(It.Is<Assignment>(c => c.Id == task.Id && c.StatusId == task.StatusId && c.Name == task.Name && c.Description == task.Description && c.StartDate == task.StartDate && c.ExpiryDate == task.ExpiryDate && c.ManagerId==task.ManagerId && c.ProjectId==task.ProjectId)), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
         }
 
@@ -122,8 +122,8 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_AddAsync_AddsStatus()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentStatusRepository.AddAsync(It.IsAny<AssignmentStatus>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentStatusRepository1.AddAsync(It.IsAny<AssignmentStatus>()));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
             var status = new StatusModel { Id = 1, Name = "Status1" };
@@ -132,7 +132,7 @@ namespace TaskTrackingTest.BusinessTests
             await taskService.AddStatusAsync(status);
 
             //Assert
-            mockUnitOfWork.Verify(x => x.AssignmentStatusRepository.AddAsync(It.Is<AssignmentStatus>(c => c.Id == status.Id && c.Name == status.Name)), Times.Once);
+            mockUnitOfWork.Verify(x => x.AssignmentStatusRepository1.AddAsync(It.Is<AssignmentStatus>(c => c.Id == status.Id && c.Name == status.Name)), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
         }
 
@@ -140,10 +140,10 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_AddAsync_ThrowsTaskTrackingExceptionWithEmptyName()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentRepository.AddAsync(It.IsAny<Assignment>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentRepository1.AddAsync(It.IsAny<Assignment>()));
             mockUnitOfWork
-                .Setup(t => t.ProjectRepository.GetByIdAsync(It.IsAny<int>()))
+                .Setup(t => t.ProjectRepository1.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProjectEntities.FirstOrDefault(t => t.Id == 1));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
@@ -160,10 +160,10 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_AddAsync_ThrowsTaskTrackingExceptionWithEmptyDescription()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentRepository.AddAsync(It.IsAny<Assignment>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentRepository1.AddAsync(It.IsAny<Assignment>()));
             mockUnitOfWork
-                .Setup(t => t.ProjectRepository.GetByIdAsync(It.IsAny<int>()))
+                .Setup(t => t.ProjectRepository1.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProjectEntities.FirstOrDefault(t => t.Id == 1));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
@@ -180,8 +180,8 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_AddStatusAsync_ThrowsTaskTrackingExceptionWithEmptyName()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentStatusRepository.AddAsync(It.IsAny<AssignmentStatus>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentStatusRepository1.AddAsync(It.IsAny<AssignmentStatus>()));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
             var status = new StatusModel { Id = 1, Name = string.Empty };
@@ -199,10 +199,10 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_DeleteAsync_DeletesTask(int id)
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentRepository.DeleteByIdAsync(It.IsAny<int>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentRepository1.DeleteByIdAsync(It.IsAny<int>()));
             mockUnitOfWork
-                .Setup(x => x.AssignmentRepository.GetByIdWithDetailsAsync(It.IsAny<int>()))
+                .Setup(x => x.AssignmentRepository1.GetByIdWithDetailsAsync(It.IsAny<int>()))
                 .ReturnsAsync(TaskEntities.FirstOrDefault(t => t.Id == 1));
             var mockEmailService = new Mock<IEmailService>();
             mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
@@ -212,7 +212,7 @@ namespace TaskTrackingTest.BusinessTests
             await taskService.DeleteAsync(id);
 
             //Assert
-            mockUnitOfWork.Verify(x => x.AssignmentRepository.DeleteByIdAsync(id), Times.Once);
+            mockUnitOfWork.Verify(x => x.AssignmentRepository1.DeleteByIdAsync(id), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
         }
 
@@ -222,15 +222,15 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_DeleteAsync_DeletesStatus(int id)
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentStatusRepository.DeleteByIdAsync(It.IsAny<int>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentStatusRepository1.DeleteByIdAsync(It.IsAny<int>()));
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             await taskService.DeleteStatusAsync(id);
 
             //Assert
-            mockUnitOfWork.Verify(x => x.AssignmentStatusRepository.DeleteByIdAsync(id), Times.Once);
+            mockUnitOfWork.Verify(x => x.AssignmentStatusRepository1.DeleteByIdAsync(id), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
         }
 
@@ -238,13 +238,13 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_UpdateAsync_UpdatesTask()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentRepository.Update(It.IsAny<Assignment>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentRepository1.Update(It.IsAny<Assignment>()));
             mockUnitOfWork
-                .Setup(t => t.ProjectRepository.GetByIdAsync(It.IsAny<int>()))
+                .Setup(t => t.ProjectRepository1.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProjectEntities.FirstOrDefault(t => t.Id == 1));
             mockUnitOfWork
-                .Setup(x => x.AssignmentRepository.GetByIdWithDetailsAsync(It.IsAny<int>()))
+                .Setup(x => x.AssignmentRepository1.GetByIdWithDetailsAsync(It.IsAny<int>()))
                 .ReturnsAsync(TaskEntities.FirstOrDefault(t => t.Id == 1));
             var mockEmailService = new Mock<IEmailService>();
             mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
@@ -256,7 +256,7 @@ namespace TaskTrackingTest.BusinessTests
             await taskService.UpdateAsync(task);
 
             //Assert
-            mockUnitOfWork.Verify(x => x.AssignmentRepository.Update(It.Is<Assignment>(c => c.Id == task.Id && c.StatusId == task.StatusId && c.Name == task.Name && c.Description == task.Description && c.StartDate == task.StartDate && c.ExpiryDate == task.ExpiryDate && c.ManagerId == task.ManagerId && c.ProjectId == task.ProjectId)), Times.Once);
+            mockUnitOfWork.Verify(x => x.AssignmentRepository1.Update(It.Is<Assignment>(c => c.Id == task.Id && c.StatusId == task.StatusId && c.Name == task.Name && c.Description == task.Description && c.StartDate == task.StartDate && c.ExpiryDate == task.ExpiryDate && c.ManagerId == task.ManagerId && c.ProjectId == task.ProjectId)), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
         }
 
@@ -264,8 +264,8 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_UpdateAsync_UpdatesStatus()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentStatusRepository.Update(It.IsAny<AssignmentStatus>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentStatusRepository1.Update(It.IsAny<AssignmentStatus>()));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
             var status = new StatusModel { Id = 4, Name = "Updated Name" };
@@ -274,7 +274,7 @@ namespace TaskTrackingTest.BusinessTests
             await taskService.UpdateStatusAsync(status);
 
             //Assert
-            mockUnitOfWork.Verify(x => x.AssignmentStatusRepository.Update(It.Is<AssignmentStatus>(c => c.Id == status.Id && c.Name == status.Name)), Times.Once);
+            mockUnitOfWork.Verify(x => x.AssignmentStatusRepository1.Update(It.Is<AssignmentStatus>(c => c.Id == status.Id && c.Name == status.Name)), Times.Once);
             mockUnitOfWork.Verify(x => x.SaveAsync(), Times.Once);
         }
 
@@ -282,10 +282,10 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_UpdateAsync_ThrowsTaskTrackingExceptionWithEmptyName()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentRepository.Update(It.IsAny<Assignment>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentRepository1.Update(It.IsAny<Assignment>()));
             mockUnitOfWork
-                .Setup(t => t.ProjectRepository.GetByIdAsync(It.IsAny<int>()))
+                .Setup(t => t.ProjectRepository1.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProjectEntities.FirstOrDefault(t => t.Id == 1));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
@@ -302,10 +302,10 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_UpdateAsync_ThrowsTaskTrackingExceptionWithEmptyDescription()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentRepository.Update(It.IsAny<Assignment>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentRepository1.Update(It.IsAny<Assignment>()));
             mockUnitOfWork
-                .Setup(t => t.ProjectRepository.GetByIdAsync(It.IsAny<int>()))
+                .Setup(t => t.ProjectRepository1.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(ProjectEntities.FirstOrDefault(t => t.Id == 1));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
@@ -322,8 +322,8 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_UpdateStatusAsync_ThrowsTaskTrackingExceptionWithEmptyName()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentStatusRepository.Update(It.IsAny<AssignmentStatus>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentStatusRepository1.Update(It.IsAny<AssignmentStatus>()));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
             var status = new StatusModel { Id = 1, Name = string.Empty };
@@ -341,10 +341,10 @@ namespace TaskTrackingTest.BusinessTests
             //Arrange
             var expected = UserModels.Where(t => t.Id == 1).ToList();
 
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
 
             mockUnitOfWork
-                .Setup(x => x.AssignmentRepository.GetByIdWithDetailsAsync(It.IsAny<int>()))
+                .Setup(x => x.AssignmentRepository1.GetByIdWithDetailsAsync(It.IsAny<int>()))
                 .ReturnsAsync(TaskEntities.FirstOrDefault(t => t.Id == 1));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
@@ -361,10 +361,10 @@ namespace TaskTrackingTest.BusinessTests
         public async Task TaskService_UpdateTaskStatusAsync_ThrowsTaskTrackingExceptionWithEmptyName()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
-            mockUnitOfWork.Setup(m => m.AssignmentRepository.Update(It.IsAny<Assignment>()));
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
+            mockUnitOfWork.Setup(m => m.AssignmentRepository1.Update(It.IsAny<Assignment>()));
             mockUnitOfWork
-                .Setup(t => t.AssignmentRepository.GetByIdWithDetailsAsync(It.IsAny<int>()))
+                .Setup(t => t.AssignmentRepository1.GetByIdWithDetailsAsync(It.IsAny<int>()))
                 .ReturnsAsync(TaskEntities.FirstOrDefault(t => t.Id == 1));
 
             var taskService = new TaskService(mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);

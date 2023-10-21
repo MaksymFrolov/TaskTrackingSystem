@@ -18,7 +18,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentRepository = new AssignmentRepository(context);
+            var assignmentRepository = new AssignmentRepository1(context);
 
             var expected = ExpectedTasks.FirstOrDefault(x => x.Id == id);
 
@@ -35,7 +35,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentRepository = new AssignmentRepository(context);
+            var assignmentRepository = new AssignmentRepository1(context);
 
             //Act
             var actual = await assignmentRepository.GetAllAsync();
@@ -50,7 +50,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentRepository = new AssignmentRepository(context);
+            var assignmentRepository = new AssignmentRepository1(context);
 
             var assignment = new Assignment { Id = 5, Name = "Name5", Description = "Description5", StartDate = DateTime.Now.AddDays(-7), ExpiryDate = DateTime.Now.AddDays(7), StatusId = 1, ManagerId = 2, ProjectId = 1 };
 
@@ -69,7 +69,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentRepository = new AssignmentRepository(context);
+            var assignmentRepository = new AssignmentRepository1(context);
 
             //Act
             await assignmentRepository.DeleteByIdAsync(1);
@@ -86,7 +86,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentRepository = new AssignmentRepository(context);
+            var assignmentRepository = new AssignmentRepository1(context);
 
             var assignment = new Assignment
             {
@@ -125,7 +125,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentRepository = new AssignmentRepository(context);
+            var assignmentRepository = new AssignmentRepository1(context);
 
             var expected = ExpectedTasks.FirstOrDefault(x => x.Id == 1);
 
@@ -158,7 +158,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentRepository = new AssignmentRepository(context);
+            var assignmentRepository = new AssignmentRepository1(context);
 
             //Act
             var actual = await assignmentRepository.GetAllWithDetailsAsync();

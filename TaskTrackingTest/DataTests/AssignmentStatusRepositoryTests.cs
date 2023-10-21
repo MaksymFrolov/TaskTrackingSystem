@@ -17,7 +17,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentStatusRepository = new AssignmentStatusRepository(context);
+            var assignmentStatusRepository = new AssignmentStatusRepository1(context);
 
             var expected = ExpectedAssignmentStatuses.FirstOrDefault(x => x.Id == id);
 
@@ -34,7 +34,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentStatusRepository = new AssignmentStatusRepository(context);
+            var assignmentStatusRepository = new AssignmentStatusRepository1(context);
 
             //Act
             var actual = await assignmentStatusRepository.GetAllAsync();
@@ -49,7 +49,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentStatusRepository = new AssignmentStatusRepository(context);
+            var assignmentStatusRepository = new AssignmentStatusRepository1(context);
 
             var assignmentStatus = new AssignmentStatus { Id = 4, Name = "Status4" };
 
@@ -68,7 +68,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentStatusRepository = new AssignmentStatusRepository(context);
+            var assignmentStatusRepository = new AssignmentStatusRepository1(context);
 
             //Act
             await assignmentStatusRepository.DeleteByIdAsync(1);
@@ -85,7 +85,7 @@ namespace TaskTrackingTest.DataTests
             //Arrange
             using var context = new TaskDbContext(UnitTestHelper.GetUnitTestDbOptions());
 
-            var assignmentStatusRepository = new AssignmentStatusRepository(context);
+            var assignmentStatusRepository = new AssignmentStatusRepository1(context);
 
             var assignmentStatus = new AssignmentStatus
             {

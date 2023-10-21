@@ -21,7 +21,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = UserModels.FirstOrDefault(t => t.Id == id);
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
 
             // Act
             var actual = await userService.GetByIdAsync(id);
@@ -46,7 +46,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = RoleModels.FirstOrDefault(t => t.Id == id);
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
 
             // Act
             var actual = await userService.GetRoleByIdAsync(id);
@@ -69,7 +69,7 @@ namespace TaskTrackingTest.BusinessTests
             var mockEmailService = new Mock<IEmailService>();
             mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -98,7 +98,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = string.Empty,
@@ -126,7 +126,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -154,7 +154,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -182,7 +182,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -210,7 +210,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -238,7 +238,7 @@ namespace TaskTrackingTest.BusinessTests
             fakeUserManager.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
                 .ReturnsAsync(UserEntities.FirstOrDefault(t => t.Email == "email1@gmail.com"));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new RegisterUserModel
             {
                 FirstName = "Firstname1",
@@ -266,7 +266,7 @@ namespace TaskTrackingTest.BusinessTests
 
             mockRoleManager.Setup(m => m.CreateAsync(It.IsAny<IdentityRole<int>>()));
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
             var role = new RoleModel
             {
                 Id = 1,
@@ -290,7 +290,7 @@ namespace TaskTrackingTest.BusinessTests
 
             mockRoleManager.Setup(m => m.CreateAsync(It.IsAny<IdentityRole<int>>()));
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
             var role = new RoleModel
             {
                 Id = 1,
@@ -318,7 +318,7 @@ namespace TaskTrackingTest.BusinessTests
             var mockEmailService = new Mock<IEmailService>();
             mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var user = new UpdateUserModel
             {
                 Id=1,
@@ -347,7 +347,7 @@ namespace TaskTrackingTest.BusinessTests
                 .ReturnsAsync(RoleEntities.First());
             mockRoleManager.Setup(m => m.UpdateAsync(It.IsAny<IdentityRole<int>>()));
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
             var role = new RoleModel
             {
                 Id = 1,
@@ -371,7 +371,7 @@ namespace TaskTrackingTest.BusinessTests
                 .ReturnsAsync(UserEntities.First());
             fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new UpdateUserModel
             {
                 Id=1,
@@ -398,7 +398,7 @@ namespace TaskTrackingTest.BusinessTests
                 .ReturnsAsync(UserEntities.First());
             fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new UpdateUserModel
             {
                 Id=1,
@@ -425,7 +425,7 @@ namespace TaskTrackingTest.BusinessTests
                 .ReturnsAsync(UserEntities.First());
             fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new UpdateUserModel
             {
                 Id=1,
@@ -452,7 +452,7 @@ namespace TaskTrackingTest.BusinessTests
                 .ReturnsAsync(UserEntities.First());
             fakeUserManager.Setup(m => m.UpdateAsync(It.IsAny<User>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
             var user = new UpdateUserModel
             {
                 Id=1,
@@ -481,7 +481,7 @@ namespace TaskTrackingTest.BusinessTests
             mockRoleManager.Setup(t => t.FindByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(RoleEntities.First());
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
             var role = new RoleModel
             {
                 Id = 1,
@@ -510,7 +510,7 @@ namespace TaskTrackingTest.BusinessTests
             var mockEmailService = new Mock<IEmailService>();
             mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
 
             //Act
             await userService.DeleteAsync(1);
@@ -534,7 +534,7 @@ namespace TaskTrackingTest.BusinessTests
 
             mockRoleManager.Setup(m => m.DeleteAsync(It.IsAny<IdentityRole<int>>()));
 
-            var userService = new UserService(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(mockRoleManager.Object, null, null, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             await userService.DeleteRoleAsync(1);
@@ -557,7 +557,7 @@ namespace TaskTrackingTest.BusinessTests
             var mockEmailService = new Mock<IEmailService>();
             mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var role = new RoleModel
             {
                 Id = 1,
@@ -586,7 +586,7 @@ namespace TaskTrackingTest.BusinessTests
             var mockEmailService = new Mock<IEmailService>();
             mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var roles = RoleModels.ToList();
 
             //Act
@@ -611,7 +611,7 @@ namespace TaskTrackingTest.BusinessTests
             var mockEmailService = new Mock<IEmailService>();
             mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var roles = RoleModels.ToList();
 
             //Act
@@ -636,7 +636,7 @@ namespace TaskTrackingTest.BusinessTests
             var mockEmailService = new Mock<IEmailService>();
             mockEmailService.Setup(m => m.SendEmailAsync(It.IsAny<MessageModel>()));
 
-            var userService = new UserService(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
+            var userService = new UserService1(null, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), mockEmailService.Object);
             var role = new RoleModel
             {
                 Id = 1,
@@ -655,15 +655,15 @@ namespace TaskTrackingTest.BusinessTests
         public async Task UserService_GetAllAsync_ReturnsAllPositionsByUserId()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
 
             mockUnitOfWork
-                .Setup(x => x.UserProjectRepository.GetAllWithDetailsAsync())
+                .Setup(x => x.UserProjectRepository1.GetAllWithDetailsAsync())
                 .ReturnsAsync(UserProjectEntities.AsEnumerable());
 
             var expected = PositionModels.ToList();
 
-            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             var actual = await userService.GetAllPositionsByUserIdAsync(1);
@@ -676,15 +676,15 @@ namespace TaskTrackingTest.BusinessTests
         public async Task UserService_GetAllAsync_ReturnsAllProjectsByUserId()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
 
             mockUnitOfWork
-                .Setup(x => x.UserProjectRepository.GetAllWithDetailsAsync())
+                .Setup(x => x.UserProjectRepository1.GetAllWithDetailsAsync())
                 .ReturnsAsync(UserProjectEntities.AsEnumerable());
 
             var expected = ProjectModels.ToList();
 
-            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             var actual = await userService.GetAllProjectsByUserIdAsync(1);
@@ -698,15 +698,15 @@ namespace TaskTrackingTest.BusinessTests
         public async Task UserService_GetAllAsync_ReturnsAllTasksByUserId()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
 
             mockUnitOfWork
-                .Setup(x => x.AssignmentRepository.GetAllWithDetailsAsync())
+                .Setup(x => x.AssignmentRepository1.GetAllWithDetailsAsync())
                 .ReturnsAsync(TaskWithUserProjectEntities.AsEnumerable());
 
             var expected = TaskModels.ToList();
 
-            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             var actual = await userService.GetAllTasksByUserIdAsync(1);
@@ -720,15 +720,15 @@ namespace TaskTrackingTest.BusinessTests
         public async Task UserService_GetAllAsync_ReturnsAllTasksByManagerId()
         {
             //Arrange
-            var mockUnitOfWork = new Mock<IUnitOfWork>();
+            var mockUnitOfWork = new Mock<IUnitOfWork1>();
 
             mockUnitOfWork
-                .Setup(x => x.AssignmentRepository.GetAllWithDetailsAsync())
+                .Setup(x => x.AssignmentRepository1.GetAllWithDetailsAsync())
                 .ReturnsAsync(TaskWithUserProjectEntities.AsEnumerable());
 
             var expected = TaskModels.ToList();
 
-            var userService = new UserService(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(null, null, mockUnitOfWork.Object, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             var actual = await userService.GetAllTasksByManagerIdAsync(2);
@@ -759,7 +759,7 @@ namespace TaskTrackingTest.BusinessTests
 
             var expected = RoleModels.Where(t => t.Name == "Name1");
 
-            var userService = new UserService(mockRoleManager.Object, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
+            var userService = new UserService1(mockRoleManager.Object, fakeUserManager.Object, null, UnitTestHelper.CreateMapperProfile(), null);
 
             //Act
             var actual = await userService.GetAllRolesByUserIdAsync(1);

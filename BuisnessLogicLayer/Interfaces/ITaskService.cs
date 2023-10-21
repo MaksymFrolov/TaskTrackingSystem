@@ -5,7 +5,7 @@ namespace BuisnessLogicLayer.Interfaces
     /// <summary>
     ///   Describes a taskService
     /// </summary>
-    public interface ITaskService : ICrud<TaskModel>
+    public interface ITaskService : ICrud1<TaskModel>
     {
         /// <summary>Gets all users by task identifier asynchronous.</summary>
         /// <param name="id">The identifier.</param>

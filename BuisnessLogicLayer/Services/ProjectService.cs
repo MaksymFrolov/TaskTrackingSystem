@@ -10,18 +10,18 @@ namespace BuisnessLogicLayer.Services
     /// </summary>
     public class ProjectService : IProjectService
     {
-        readonly IUnitOfWork unitOfWork;
+        readonly IUnitOfWork1 _unitOfWork1;
 
         readonly IMapper mapper;
 
         readonly IEmailService emailService;
 
         /// <summary>Initializes a new instance of the <see cref="ProjectService" /> class.</summary>
-        /// <param name="unitOfWork">The unit of work.</param>
+        /// <param name="unitOfWork1">The unit of work.</param>
         /// <param name="mapper">The mapper.</param>
-        public ProjectService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService)
+        public ProjectService(IUnitOfWork1 unitOfWork1, IMapper mapper, IEmailService emailService)
         {
-            this.unitOfWork = unitOfWork;
+            this._unitOfWork1 = unitOfWork1;
             this.mapper = mapper;
             this.emailService = emailService;
         }
@@ -34,9 +34,9 @@ namespace BuisnessLogicLayer.Services
 
             var project = mapper.Map<Project>(model);
 
-            await unitOfWork.ProjectRepository.AddAsync(project);
+            await _unitOfWork1.ProjectRepository1.AddAsync(project);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
         }
 
         /// <summary>Adds the status asynchronous.</summary>
@@ -47,9 +47,9 @@ namespace BuisnessLogicLayer.Services
 
             var status = mapper.Map<ProjectStatus>(model);
 
-            await unitOfWork.ProjectStatusRepository.AddAsync(status);
+            await _unitOfWork1.ProjectStatusRepository1.AddAsync(status);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
         }
 
         /// <summary>Deletes the project model by id asynchronous.</summary>
@@ -60,9 +60,9 @@ namespace BuisnessLogicLayer.Services
 
             var project = await GetByIdAsync(id);
 
-            await unitOfWork.ProjectRepository.DeleteByIdAsync(id);
+            await _unitOfWork1.ProjectRepository1.DeleteByIdAsync(id);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
 
             if (users.Count() > 0)
             {
@@ -80,16 +80,16 @@ namespace BuisnessLogicLayer.Services
         /// <param name="id">The identifier.</param>
         public async Task DeleteStatusAsync(int id)
         {
-            await unitOfWork.ProjectStatusRepository.DeleteByIdAsync(id);
+            await _unitOfWork1.ProjectStatusRepository1.DeleteByIdAsync(id);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
         }
 
         /// <summary>Gets all models asynchronous.</summary>
         /// <returns>ProjectModels</returns>
         public async Task<IEnumerable<ProjectModel>> GetAllAsync()
         {
-            var list = await unitOfWork.ProjectRepository.GetAllWithDetailsAsync();
+            var list = await _unitOfWork1.ProjectRepository1.GetAllWithDetailsAsync();
 
             return mapper.Map<IEnumerable<ProjectModel>>(list);
         }
@@ -98,7 +98,7 @@ namespace BuisnessLogicLayer.Services
         /// <returns>StatusModels</returns>
         public async Task<IEnumerable<StatusModel>> GetAllStatusesAsync()
         {
-            var list = await unitOfWork.ProjectStatusRepository.GetAllAsync();
+            var list = await _unitOfWork1.ProjectStatusRepository1.GetAllAsync();
 
             return mapper.Map<IEnumerable<StatusModel>>(list);
         }
@@ -108,7 +108,7 @@ namespace BuisnessLogicLayer.Services
         /// <returns>ProjectModel</returns>
         public async Task<ProjectModel> GetByIdAsync(int id)
         {
-            var model = await unitOfWork.ProjectRepository.GetByIdWithDetailsAsync(id);
+            var model = await _unitOfWork1.ProjectRepository1.GetByIdWithDetailsAsync(id);
 
             return mapper.Map<ProjectModel>(model);
         }
@@ -118,7 +118,7 @@ namespace BuisnessLogicLayer.Services
         /// <returns>Status</returns>
         public async Task<StatusModel> GetStatusByIdAsync(int id)
         {
-            var model = await unitOfWork.ProjectStatusRepository.GetByIdAsync(id);
+            var model = await _unitOfWork1.ProjectStatusRepository1.GetByIdAsync(id);
 
             return mapper.Map<StatusModel>(model);
         }
@@ -131,9 +131,9 @@ namespace BuisnessLogicLayer.Services
 
             var project = mapper.Map<Project>(model);
 
-            unitOfWork.ProjectRepository.Update(project);
+            _unitOfWork1.ProjectRepository1.Update(project);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
 
             var users = await GetAllUsersByProjectIdAsync(model.Id);
 
@@ -158,9 +158,9 @@ namespace BuisnessLogicLayer.Services
 
             var status = mapper.Map<ProjectStatus>(model);
 
-            unitOfWork.ProjectStatusRepository.Update(status);
+            _unitOfWork1.ProjectStatusRepository1.Update(status);
 
-            await unitOfWork.SaveAsync();
+            await _unitOfWork1.SaveAsync();
         }
 
         /// <summary>Gets all tasks by project identifier asynchronous.</summary>
@@ -168,7 +168,7 @@ namespace BuisnessLogicLayer.Services
         /// <returns>TaskModels</returns>
         public async Task<IEnumerable<TaskModel>> GetAllTasksByProjectIdAsync(int id)
         {
-            var list = (await unitOfWork.AssignmentRepository.GetAllWithDetailsAsync())
+            var list = (await _unitOfWork1.AssignmentRepository1.GetAllWithDetailsAsync())
                 .Where(t => t.ProjectId == id);
 
             return mapper.Map<IEnumerable<TaskModel>>(list);
@@ -179,7 +179,7 @@ namespace BuisnessLogicLayer.Services
         /// <returns>UserModels</returns>
         public async Task<IEnumerable<UserModel>> GetAllUsersByProjectIdAsync(int id)
         {
-            var list = (await unitOfWork.ProjectRepository.GetByIdWithDetailsAsync(id))
+            var list = (await _unitOfWork1.ProjectRepository1.GetByIdWithDetailsAsync(id))
                 .Tasks
                 .SelectMany(t => t.UserProjects.Select(t => t.User))
                 .GroupBy(t => t.Id)
