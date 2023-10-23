@@ -1,4 +1,4 @@
-using BuisnessLogicLayer.Requests.ProjectStatuses;
+using BuisnessLogicLayer.Requests.AssignmentStatuses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,56 +7,56 @@ namespace WebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProjectStatusesController : ControllerBase
+public class AssignmentStatusesController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public ProjectStatusesController(IMediator mediator)
+    public AssignmentStatusesController(IMediator mediator)
     {
         _mediator = mediator;
     }
-    
+
     [HttpGet]
     [Authorize(Roles = "User, Manager")]
     public async Task<ActionResult<IReadOnlyCollection<StatusModel>>> GetStatuses()
     {
-        var response = await _mediator.Send(new GetProjectStatusesRequest());
-        
+        var response = await _mediator.Send(new GetAssignmentStatusesRequest());
+
         return Ok(response);
     }
-        
+
     [HttpGet("{id}")]
     [Authorize(Roles = "User, Manager")]
     public async Task<ActionResult<StatusModel>> GetStatus(int id)
     {
-        var response = await _mediator.Send(new GetProjectStatusRequest(id));
-        
+        var response = await _mediator.Send(new GetAssignmentStatusRequest(id));
+
         return Ok(response);
     }
-        
+
     [HttpPost]
     [Authorize(Roles = "Manager")]
-    public async Task<ActionResult> AddStatus([FromBody] AddProjectStatusRequest request)
+    public async Task<ActionResult> AddStatus([FromBody] AddAssignmentStatusRequest request)
     {
         await _mediator.Send(request);
 
         return Ok();
     }
-        
+
     [HttpPut]
     [Authorize(Roles = "Manager")]
-    public async Task<ActionResult> UpdateStatus([FromBody] UpdateProjectStatusRequest request)
+    public async Task<ActionResult> UpdateStatus([FromBody] UpdateAssignmentStatusRequest request)
     {
         await _mediator.Send(request);
 
         return Ok();
     }
-        
+
     [HttpDelete("{id}")]
     [Authorize(Roles = "Manager")]
     public async Task<ActionResult> DeleteStatus(int id)
     {
-        await _mediator.Send(new DeleteProjectStatusRequest(id));
+        await _mediator.Send(new DeleteAssignmentStatusRequest(id));
 
         return Ok();
     }

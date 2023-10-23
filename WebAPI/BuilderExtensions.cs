@@ -47,7 +47,7 @@ namespace WebAPI
 
             services.AddTransient<IGenerateTokenService, GenerateTokenService>();
 
-            services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IProjectService1, ProjectService1>();
 
             services.AddTransient<ITaskService, TaskService>();
 
