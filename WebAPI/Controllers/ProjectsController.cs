@@ -1,4 +1,7 @@
-﻿using BuisnessLogicLayer.Requests.Projects;
+﻿using BuisnessLogicLayer.Requests.Assignments;
+using BuisnessLogicLayer.Requests.Projects;
+using BuisnessLogicLayer.Responses.Assignments;
+using BuisnessLogicLayer.Responses.Projects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +21,7 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Authorize(Roles = "User, Manager")]
-        public async Task<ActionResult<IEnumerable<ProjectModel>>> GetProjects()
+        public async Task<ActionResult<GetProjectsResponse>> GetProjects()
         {
             var response = await _mediator.Send(new GetProjectsRequest());
             
@@ -27,19 +30,21 @@ namespace WebAPI.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Roles = "User, Manager")]
-        public async Task<ActionResult<ProjectModel>> GetProjectById(int id)
+        public async Task<ActionResult<GetProjectResponse>> GetProjectById(int id)
         {
             var response = await _mediator.Send(new GetProjectRequest(id));
 
             return Ok(response);
         }
         
-        // [HttpGet("{id}/tasks")]
-        // [Authorize(Roles = "User, Manager")]
-        // public async Task<ActionResult<IEnumerable<TaskModel>>> GetTasksByProjectId(int id)
-        // {
-        //     return Ok(await _projectService1.GetAllTasksByProjectIdAsync(id));
-        // }
+        [HttpGet("{id}/tasks")]
+        [Authorize(Roles = "User, Manager")]
+        public async Task<ActionResult<GetAssignmentsResponse>> GetTasksByProjectId(int id)
+        {
+            var response = await _mediator.Send(new GetAssignmentsByProjectIdRequest(id));
+            
+            return Ok(response);
+        }
         
         // [HttpGet("{id}/users")]
         // [Authorize(Roles = "User, Manager")]

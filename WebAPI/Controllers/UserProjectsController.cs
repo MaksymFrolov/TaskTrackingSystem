@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
         
         [HttpGet("{id}")]
         [Authorize(Roles = "User, Manager")]
-        public async Task<ActionResult<UserProjectModel>> GetUserProjectById(int id)
+        public async Task<ActionResult<GetUserProjectResponse>> GetUserProjectById(int id)
         {
             var response = await _mediator.Send(new GetUserProjectRequest(id));
             

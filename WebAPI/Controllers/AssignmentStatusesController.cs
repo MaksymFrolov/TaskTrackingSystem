@@ -1,4 +1,6 @@
 using BuisnessLogicLayer.Requests.AssignmentStatuses;
+using BuisnessLogicLayer.Responses.Assignments;
+using BuisnessLogicLayer.Responses.AssignmentStatuses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +20,7 @@ public class AssignmentStatusesController : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = "User, Manager")]
-    public async Task<ActionResult<IReadOnlyCollection<StatusModel>>> GetStatuses()
+    public async Task<ActionResult<GetAssignmentStatusesResponse>> GetStatuses()
     {
         var response = await _mediator.Send(new GetAssignmentStatusesRequest());
 
@@ -27,7 +29,7 @@ public class AssignmentStatusesController : ControllerBase
 
     [HttpGet("{id}")]
     [Authorize(Roles = "User, Manager")]
-    public async Task<ActionResult<StatusModel>> GetStatus(int id)
+    public async Task<ActionResult<GetAssignmentStatusResponse>> GetStatus(int id)
     {
         var response = await _mediator.Send(new GetAssignmentStatusRequest(id));
 
