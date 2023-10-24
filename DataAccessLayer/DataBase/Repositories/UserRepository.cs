@@ -16,6 +16,5 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         return await _dbSet
             .Where(expression)
             .ToListAsync(cancellationToken);
-        
     }
 }

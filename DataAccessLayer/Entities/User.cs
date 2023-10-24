@@ -21,5 +21,7 @@ namespace DataAccessLayer.Entities
         public virtual ICollection<UserProject> UserProjects { get; set; }
         
         public virtual ICollection<Assignment> Tasks { get; set; }
+        
+        public ICollection<Role> Roles { get; set; }
     }
 }

@@ -12,6 +12,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly IProjectStatusRepository _projectStatusRepository;
     private readonly IUserProjectRepository _userProjectRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IRoleRepository _roleRepository;
 
     public UnitOfWork(
         TaskDbContext dbContext,
@@ -21,7 +22,8 @@ public class UnitOfWork : IUnitOfWork
         IProjectRepository projectRepository,
         IProjectStatusRepository projectStatusRepository,
         IUserProjectRepository userProjectRepository,
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        IRoleRepository roleRepository)
     {
         _dbContext = dbContext;
         _assignmentRepository = assignmentRepository;
@@ -31,6 +33,7 @@ public class UnitOfWork : IUnitOfWork
         _projectStatusRepository = projectStatusRepository;
         _userProjectRepository = userProjectRepository;
         _userRepository = userRepository;
+        _roleRepository = roleRepository;
     }
 
     public IAssignmentRepository AssignmentRepository => _assignmentRepository;
@@ -46,6 +49,8 @@ public class UnitOfWork : IUnitOfWork
     public IUserProjectRepository UserProjectRepository => _userProjectRepository;
 
     public IUserRepository UserRepository => _userRepository;
+
+    public IRoleRepository RoleRepository => _roleRepository;
 
     public async Task SaveAsync(CancellationToken cancellationToken)
     {
