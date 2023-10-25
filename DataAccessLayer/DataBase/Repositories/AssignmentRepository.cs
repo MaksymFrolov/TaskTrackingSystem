@@ -36,6 +36,11 @@ public class AssignmentRepository : GenericRepository<Assignment>, IAssignmentRe
     public async Task<IReadOnlyCollection<Assignment>> GetByExpressionAsync(Expression<Func<Assignment, bool>> expression, CancellationToken cancellationToken)
     {
         return await _dbSet
+            .Include(t => t.Manager)
+            .Include(t => t.Status)
+            .Include(t => t.Project)
+            .Include(t => t.UserProjects)
+                .ThenInclude(t => t.User)
             .Where(expression)
             .ToListAsync(cancellationToken);
     }

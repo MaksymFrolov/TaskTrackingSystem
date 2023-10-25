@@ -18,7 +18,7 @@ public class UserProjectRepository : GenericRepository<UserProject>, IUserProjec
             .Include(t => t.User)
             .Include(t => t.Position)
             .Include(t => t.Task.Project.Status)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
     }
 
     public async Task AddRangeAsync(IEnumerable<UserProject> entities, CancellationToken cancellationToken)

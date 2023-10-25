@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using BuisnessLogicLayer.Interfaces;
 
 namespace BuisnessLogicLayer.Services;
@@ -40,5 +41,10 @@ public class PositionService : IPositionService
         await _unitOfWork.PositionRepository.DeleteByIdAsync(id, cancellationToken);
 
         await _unitOfWork.SaveAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyCollection<Position>> GetAllByExpressionAsync(Expression<Func<Position, bool>> expression, CancellationToken cancellationToken)
+    {
+        return await _unitOfWork.PositionRepository.GetAllByExpressionAsync(expression, cancellationToken);
     }
 }

@@ -14,12 +14,12 @@ public class UserService : IUserService
     
     public async Task<IReadOnlyCollection<User>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _unitOfWork.UserRepository.GetAllAsync(cancellationToken);
+        return await _unitOfWork.UserRepository.GetAllWithDetailsAsync(cancellationToken);
     }
 
     public async Task<User> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await _unitOfWork.UserRepository.GetByIdAsync(id, cancellationToken);
+        return await _unitOfWork.UserRepository.GetByIdWithDetailsAsync(id, cancellationToken);
     }
 
     public async Task AddAsync(User model, CancellationToken cancellationToken)
