@@ -1,5 +1,8 @@
 ﻿using BuisnessLogicLayer.Requests.Assignments;
+using BuisnessLogicLayer.Requests.Users;
 using BuisnessLogicLayer.Responses.Assignments;
+using BuisnessLogicLayer.Responses.AssignmentStatuses;
+using BuisnessLogicLayer.Responses.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,12 +38,14 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
         
-        // [HttpGet("{id}/users")]
-        // [Authorize(Roles = "User, Manager")]
-        // public async Task<ActionResult<IEnumerable<UserModel>>> GetUsersByTaskId(int id)
-        // {
-        //     return Ok(await taskService.GetAllUsersByTaskIdAsync(id));
-        // }
+        [HttpGet("{id}/users")]
+        [Authorize(Roles = "User, Manager")]
+        public async Task<ActionResult<GetUsersResponse>> GetUsersByTaskId(int id)
+        {
+            var response = await _mediator.Send(new GetUsersByAssignmentIdRequest(id));
+            
+            return Ok(response);
+        }
         
         [HttpPost]
         [Authorize(Roles = "Manager")]
@@ -56,6 +61,15 @@ namespace WebAPI.Controllers
         public async Task<ActionResult> Update([FromBody] UpdateAssignmentRequest request)
         {
             await _mediator.Send(request);
+
+            return Ok();
+        }
+        
+        [HttpPut("{id}/status")]
+        [Authorize(Roles = "User, Manager")]
+        public async Task<ActionResult> UpdateTaskStatus(int id, [FromBody] GetAssignmentStatusResponse response)
+        {
+            await _mediator.Send(new UpdateAssignmentsStatusRequest(id, response));
 
             return Ok();
         }

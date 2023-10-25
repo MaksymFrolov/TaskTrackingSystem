@@ -1,7 +1,9 @@
 ﻿using BuisnessLogicLayer.Requests.Assignments;
 using BuisnessLogicLayer.Requests.Projects;
+using BuisnessLogicLayer.Requests.Users;
 using BuisnessLogicLayer.Responses.Assignments;
 using BuisnessLogicLayer.Responses.Projects;
+using BuisnessLogicLayer.Responses.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,12 +48,14 @@ namespace WebAPI.Controllers
             return Ok(response);
         }
         
-        // [HttpGet("{id}/users")]
-        // [Authorize(Roles = "User, Manager")]
-        // public async Task<ActionResult<IEnumerable<UserModel>>> GetUsersByProjectId(int id)
-        // {
-        //     return Ok(await _projectService1.GetAllUsersByProjectIdAsync(id));
-        // }
+        [HttpGet("{id}/users")]
+        [Authorize(Roles = "User, Manager")]
+        public async Task<ActionResult<GetUsersResponse>> GetUsersByProjectId(int id)
+        {
+            var response = await _mediator.Send(new GetUsersByProjectIdRequest(id));
+            
+            return Ok(response);
+        }
         
         [HttpPost]
         [Authorize(Roles = "Manager")]
