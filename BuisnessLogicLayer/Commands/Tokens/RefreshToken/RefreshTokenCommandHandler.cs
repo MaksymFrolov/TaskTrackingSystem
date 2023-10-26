@@ -3,6 +3,7 @@ using BuisnessLogicLayer.Interfaces;
 using BuisnessLogicLayer.Requests.Tokens;
 using BuisnessLogicLayer.Responses.Tokens;
 using BuisnessLogicLayer.Validation;
+using FluentValidation;
 using MediatR;
 
 namespace BuisnessLogicLayer.Commands.Tokens.RefreshToken;
@@ -11,17 +12,22 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenRequest, G
 {
     private readonly IGenerateTokenService _generateTokenService;
     private readonly IUserService _userService;
+    private readonly IValidator<RefreshTokenRequest> _validator;
     
     public RefreshTokenCommandHandler(
         IGenerateTokenService generateTokenService,
-        IUserService userService)
+        IUserService userService,
+        IValidator<RefreshTokenRequest> validator)
     {
         _generateTokenService = generateTokenService;
         _userService = userService;
+        _validator = validator;
     }
     
     public async Task<GetTokenResponse> Handle(RefreshTokenRequest request, CancellationToken cancellationToken)
     {
+        await _validator.ValidateAndThrowAsync(request, cancellationToken);
+        
         var principal = _generateTokenService.GetPrincipalFromExpiredToken(request.AccessToken);
 
         var userName = principal.Identity.Name;
