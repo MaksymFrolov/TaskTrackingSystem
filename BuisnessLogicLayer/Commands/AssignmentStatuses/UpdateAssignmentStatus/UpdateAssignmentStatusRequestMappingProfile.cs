@@ -5,7 +5,7 @@ namespace BuisnessLogicLayer.Commands.AssignmentStatuses.UpdateAssignmentStatus;
 
 public class UpdateAssignmentStatusRequestMappingProfile : Profile
 {
-    UpdateAssignmentStatusRequestMappingProfile()
+    public UpdateAssignmentStatusRequestMappingProfile()
     {
         CreateMap<UpdateAssignmentStatusRequest, AssignmentStatus>();
     }

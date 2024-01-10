@@ -26,6 +26,6 @@ public class GetRolesByUserIdCommandHandler : IRequestHandler<GetRolesByUserIdRe
         
         var models = await _roleService.GetAllByExpressionAsync(expression, cancellationToken);
 
-        return new(_mapper.Map<GetRoleResponse>(models));
+        return new(_mapper.Map<IReadOnlyCollection<GetRoleResponse>>(models));
     }
 }

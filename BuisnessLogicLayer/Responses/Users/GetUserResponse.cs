@@ -6,5 +6,5 @@ public record GetUserResponse(
     string LastName,
     string UserName,
     string Email,
-    IReadOnlyCollection<int> UserProjectIds,
-    IReadOnlyCollection<int> TaskIds);
+    IReadOnlyCollection<int> UserProjectIds = default!,
+    IReadOnlyCollection<int> TaskIds = default!);

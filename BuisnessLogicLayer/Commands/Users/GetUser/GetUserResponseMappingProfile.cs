@@ -5,7 +5,7 @@ namespace BuisnessLogicLayer.Commands.Users.GetUser;
 
 public class GetUserResponseMappingProfile : Profile
 {
-    GetUserResponseMappingProfile()
+    public GetUserResponseMappingProfile()
     {
         CreateMap<User, GetUserResponse>()
             .ForMember(t => t.TaskIds, t => t.MapFrom(m => m.Tasks.Select(n => n.Id)))

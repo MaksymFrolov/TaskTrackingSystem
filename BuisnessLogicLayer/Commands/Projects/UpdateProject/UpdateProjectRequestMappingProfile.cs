@@ -5,7 +5,7 @@ namespace BuisnessLogicLayer.Commands.Projects.UpdateProject;
 
 public class UpdateProjectRequestMappingProfile : Profile
 {
-    UpdateProjectRequestMappingProfile()
+    public UpdateProjectRequestMappingProfile()
     {
         CreateMap<UpdateProjectRequest, Project>();
     }

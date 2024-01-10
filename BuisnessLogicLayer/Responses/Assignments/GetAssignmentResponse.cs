@@ -12,4 +12,4 @@ public record GetAssignmentResponse(
     int StatusId,
     string ProjectName,
     int ProjectId,
-    IReadOnlyCollection<int> UserProjectIds);
+    IReadOnlyCollection<int> UserProjectIds = default!);

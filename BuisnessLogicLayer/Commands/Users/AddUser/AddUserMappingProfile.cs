@@ -5,7 +5,7 @@ namespace BuisnessLogicLayer.Commands.Users.AddUser;
 
 public class AddUserMappingProfile : Profile
 {
-    AddUserMappingProfile()
+    public AddUserMappingProfile()
     {
         CreateMap<AddUserRequest, User>()
             .ForMember(u => u.HashPassword, o => o.Ignore());

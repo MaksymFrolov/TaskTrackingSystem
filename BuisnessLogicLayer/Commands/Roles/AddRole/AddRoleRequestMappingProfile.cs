@@ -5,7 +5,7 @@ namespace BuisnessLogicLayer.Commands.Roles.AddRole;
 
 public class AddRoleRequestMappingProfile : Profile
 {
-    AddRoleRequestMappingProfile()
+    public AddRoleRequestMappingProfile()
     {
         CreateMap<AddRoleRequest, Role>();
     }

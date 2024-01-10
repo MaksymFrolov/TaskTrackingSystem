@@ -5,7 +5,7 @@ namespace BuisnessLogicLayer.Commands.Users.UpdateUser;
 
 public class UpdateUserRequestMappingProfile : Profile
 {
-    UpdateUserRequestMappingProfile()
+    public UpdateUserRequestMappingProfile()
     {
         CreateMap<UpdateUserRequest, User>();
     }

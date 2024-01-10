@@ -5,7 +5,7 @@ namespace BuisnessLogicLayer.Commands.Roles.UpdateRole;
 
 public class UpdateRoleRequestMappingProfile : Profile
 {
-    UpdateRoleRequestMappingProfile()
+    public UpdateRoleRequestMappingProfile()
     {
         CreateMap<UpdateRoleRequest, Role>();
     }

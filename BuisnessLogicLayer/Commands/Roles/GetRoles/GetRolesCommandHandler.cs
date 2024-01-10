@@ -23,6 +23,6 @@ public class GetRolesCommandHandler : IRequestHandler<GetRolesRequest, GetRolesR
     {
         var models = await _roleService.GetAllAsync(cancellationToken);
 
-        return new(_mapper.Map<GetRoleResponse>(models));
+        return new(_mapper.Map<IReadOnlyCollection<GetRoleResponse>>(models));
     }
 }

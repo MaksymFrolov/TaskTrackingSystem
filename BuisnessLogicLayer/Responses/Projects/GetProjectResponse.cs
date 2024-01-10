@@ -8,4 +8,4 @@ public record GetProjectResponse(
     DateTime ExpiryDate,
     string StatusName,
     int StatusId,
-    IReadOnlyCollection<int> TaskIds);
+    IReadOnlyCollection<int> TaskIds = default!);

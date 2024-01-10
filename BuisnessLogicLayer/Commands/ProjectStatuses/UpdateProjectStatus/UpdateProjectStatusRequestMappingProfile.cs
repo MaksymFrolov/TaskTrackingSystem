@@ -5,7 +5,7 @@ namespace BuisnessLogicLayer.Commands.ProjectStatuses.UpdateProjectStatus;
 
 public class UpdateProjectStatusRequestMappingProfile : Profile
 {
-    UpdateProjectStatusRequestMappingProfile()
+    public UpdateProjectStatusRequestMappingProfile()
     {
         CreateMap<UpdateProjectStatusRequest, ProjectStatus>();
     }

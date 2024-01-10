@@ -33,13 +33,16 @@ namespace DataAccessLayer.DataBase
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<UserProject>()
-                .HasAlternateKey(t => new { t.TaskId, t.UserId });
+                .HasIndex(t => new { t.TaskId, t.UserId })
+                .IsUnique();
 
             modelBuilder.Entity<ProjectStatus>()
-                .HasAlternateKey(t => t.Name);
+                .HasIndex(u => u.Name)
+                .IsUnique();
 
             modelBuilder.Entity<AssignmentStatus>()
-                .HasAlternateKey(t => t.Name);
+                .HasIndex(u => u.Name)
+                .IsUnique();
             
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.UserName)
