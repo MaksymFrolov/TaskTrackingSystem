@@ -11,10 +11,8 @@ namespace WebAPI
     {
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<TaskDbContext>(options =>
-            {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            });
+            services.AddDbContext<TaskDbContext>(opts =>
+                opts.UseSqlite(configuration.GetConnectionString("DefaultConnection")!)); 
         }
 
         public static void ConfigureIdentity(this IServiceCollection services)

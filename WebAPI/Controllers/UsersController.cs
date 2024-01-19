@@ -24,7 +24,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<UserModel>>> GetUsers()
         {
             return Ok(await userService.GetAllAsync());
@@ -35,7 +34,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpGet("roles")]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<RoleModel>>> GetRoles()
         {
             return Ok(await userService.GetAllRolesAsync());
@@ -47,7 +45,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult or NotFoundObjectResult
         /// </returns>
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<ActionResult<UserModel>> GetUserById(int id)
         {
             var model = await userService.GetByIdAsync(id);
@@ -64,7 +61,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult or NotFoundObjectResult
         /// </returns>
         [HttpGet("email/{email}")]
-        [Authorize]
         public async Task<ActionResult<UserModel>> GetUserByEmail(string email)
         {
             var model = await userService.GetByEmailAsync(email);
@@ -81,7 +77,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult or NotFoundObjectResult
         /// </returns>
         [HttpGet("roles/{id}")]
-        [Authorize]
         public async Task<ActionResult<RoleModel>> GetRoleById(int id)
         {
             var model = await userService.GetRoleByIdAsync(id);
@@ -98,7 +93,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpGet("{id}/positions")]
-        [Authorize(Roles = "Manager, User")]
         public async Task<ActionResult<IEnumerable<PositionModel>>> GetPositionsByUserId(int id)
         {
             return Ok(await userService.GetAllPositionsByUserIdAsync(id));
@@ -110,7 +104,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpGet("{id}/projects")]
-        [Authorize(Roles = "Manager, User")]
         public async Task<ActionResult<IEnumerable<ProjectModel>>> GetProjectsByUserId(int id)
         {
             return Ok(await userService.GetAllProjectsByUserIdAsync(id));
@@ -122,7 +115,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpGet("{id}/tasks")]
-        [Authorize(Roles = "Manager, User")]
         public async Task<ActionResult<IEnumerable<TaskModel>>> GetTasksByUserId(int id)
         {
             return Ok(await userService.GetAllTasksByUserIdAsync(id));
@@ -134,7 +126,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpGet("{id}/manager/tasks")]
-        [Authorize(Roles = "Manager")]
         public async Task<ActionResult<IEnumerable<TaskModel>>> GetTasksByManagerId(int id)
         {
             return Ok(await userService.GetAllTasksByManagerIdAsync(id));
@@ -146,7 +137,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpGet("{id}/roles")]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<RoleModel>>> GetRolesByUserId(int id)
         {
             return Ok(await userService.GetAllRolesByUserIdAsync(id));
@@ -158,7 +148,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpPost]
-        [AllowAnonymous]
         public async Task<ActionResult> AddUser([FromBody] RegisterUserModel model)
         {
             await userService.AddAsync(model);
@@ -172,7 +161,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpPost("roles")]
-        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> AddRole([FromBody] RoleModel model)
         {
             await userService.AddRoleAsync(model);
@@ -187,7 +175,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpPost("{id}/role")]
-        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> AddToRole(int id, [FromBody] RoleModel model)
         {
             await userService.AddToRoleAsync(id, model);
@@ -202,7 +189,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult 
         /// </returns>
         [HttpPost("{id}/roles")]
-        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> AddToRoles(int id, [FromBody] IEnumerable<RoleModel> models)
         {
             await userService.AddToRolesAsync(id, models);
@@ -216,7 +202,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpPut]
-        [Authorize]
         public async Task<ActionResult> UpdateUser([FromBody] UpdateUserModel model)
         {
             await userService.UpdateAsync(model);
@@ -230,7 +215,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpPut("roles")]
-        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> UpdateRole([FromBody] RoleModel model)
         {
             await userService.UpdateRoleAsync(model);
@@ -244,7 +228,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<ActionResult> DeleteUser(int id)
         {
             await userService.DeleteAsync(id);
@@ -258,7 +241,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpDelete("roles/{id}")]
-        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> DeleteRole(int id)
         {
             await userService.DeleteRoleAsync(id);
@@ -273,7 +255,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpDelete("{id}/role")]
-        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> DeleteToRole(int id, [FromQuery] string name)
         {
             await userService.DeleteToRoleAsync(id, name);
@@ -288,7 +269,6 @@ namespace WebAPI.Controllers
         ///   OkObjectResult
         /// </returns>
         [HttpDelete("{id}/roles")]
-        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> DeleteToRoles(int id, [FromQuery] IEnumerable<string> names)
         {
             await userService.DeleteToRolesAsync(id, names);

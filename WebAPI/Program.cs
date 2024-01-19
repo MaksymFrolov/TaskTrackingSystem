@@ -37,6 +37,8 @@ builder.Services.ConfigureAuthentication(configuration);
 
 var app = builder.Build();
 
+app.UseMiddleware(typeof(QueryTimeMiddleware));
+
 app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
 
 // Configure the HTTP request pipeline.
